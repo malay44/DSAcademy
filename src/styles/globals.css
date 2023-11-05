@@ -84,13 +84,13 @@ code {
 	white-space: pre-wrap;
 	background-color: hsla(0, 0%, 100%, 0.07);
 	border-color: rgba(247, 250, 255, 0.12);
-	color: rgba(239, 241, 246, 0.75);
+	/* color: rgba(239, 241, 246, 0.75); */
 }
 
 .example-card pre {
-	background-color: hsla(0, 0%, 100%, 0.1);
+	background-color:#ECECEC;
 	border-radius: 0.5rem;
-	color: rgba(239, 241, 246, 0.75);
+	/* color: rgba(239, 241, 246, 0.75); */
 	font-size: 0.98rem;
 	line-height: 1.25rem;
 	margin-bottom: 1rem;
@@ -99,6 +99,6 @@ code {
 	white-space: pre-wrap;
 }
 .example-card pre strong {
-	color: white;
+	/* color: white; */
 	font-size: 1rem;
 }
