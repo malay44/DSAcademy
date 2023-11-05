@@ -25,6 +25,16 @@ const AddProblems = (props: Props) => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault(); // prevent page refresh / convert inputs order to integer
+        
+        // for taking input from form
+        // const InputProblem = {
+        //     ...inputs,
+        //     order: parseInt(inputs.order),
+        // }
+        // await setDoc(doc(firestore, "problems", InputProblem.id), InputProblem);
+        // alert('saved to db');
+
+        // for taking input from mockProblems
         problems.forEach(async (problem) => {
             await setDoc(doc(firestore, "problems", problem.id), problem);
             alert('saved to db');
