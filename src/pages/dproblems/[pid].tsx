@@ -1,5 +1,5 @@
 // dproblem/[pid].tsx
-"use client";
+"use server";
 import Topbar from "@/components/Topbar/Topbar";
 import Workspace from "@/components/Workspace/Workspace";
 import { firestore } from "@/firebase/firebase";
@@ -7,6 +7,7 @@ import { Problem } from "@/utils/types/problem";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import NotFoundPage from "@/components/notFound";
 
 type ProblemPageProps = {
 };
@@ -14,6 +15,7 @@ type ProblemPageProps = {
 const ProblemPage: React.FC<ProblemPageProps> = () => {
     const [loading, setLoading] = useState(true);
     const [problem, setProblem] = useState<Problem>({} as Problem);
+    const [notFound, setNotFound] = useState(false);
 
     const { pid } = useRouter().query;
 
@@ -25,6 +27,7 @@ const ProblemPage: React.FC<ProblemPageProps> = () => {
                 const result = await getDoc(problemRef);
                 if (!result.exists()) {
                     // display default 404 page
+                    setNotFound(true);
                     return;
                 }
                 const data = result.data();
@@ -44,6 +47,7 @@ const ProblemPage: React.FC<ProblemPageProps> = () => {
 		<div>
 			<Topbar problemPage />
 			{ !loading && <Workspace problem={problem} /> }
+      { notFound && <NotFoundPage />}
 		</div>
 	);
 };
