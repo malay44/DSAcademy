@@ -36,7 +36,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 
 	return (
 		<>
-			<tbody className='text-white'>
+			<tbody className='text-black'>
 				{problems.map((problem, idx) => {
 					const difficulyColor =
 						problem.difficulty === "Easy"
@@ -79,7 +79,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 										}
 									/>
 								) : (
-									<p className='text-gray-400'>Coming soon</p>
+									<p className='text-black'>Coming soon</p>
 								)}
 							</td>
 						</tr>

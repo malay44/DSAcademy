@@ -42,10 +42,10 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 	};
 
 	return (
-		<nav className='relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-1 text-dark-gray-7'>
+		<nav className='relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-2 text-dark-black-7'>
 			<div className={`flex w-full items-center justify-between ${!problemPage ? "max-w-[1200px] mx-auto" : ""}`}>
-				<Link href='/' className='h-[22px] flex-1'>
-					<Image src='/logo-full.png' alt='Logo' height={100} width={100} />
+				<Link style={{font: 'Roboto Mono'}}  href='/' className='h-[22px] flex-1'>
+					<p className="font-bold"> &lt;DSAcademy/&gt; </p>
 				</Link>
 
 				{problemPage && (
@@ -58,7 +58,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 						</div>
 						<Link
 							href='/'
-							className='flex items-center gap-2 font-medium max-w-[170px] text-dark-gray-8 cursor-pointer'
+							className='flex items-center gap-2 font-medium max-w-[170px] text-dark-black-8 cursor-pointer'
 						>
 							<div>
 								<BsList />
@@ -73,7 +73,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 						</div>
 					</div>
 				)}
-
+				
 				<div className='flex items-center space-x-4 flex-1 justify-end'>
 					<div>
 						<a
