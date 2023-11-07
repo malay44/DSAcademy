@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import PreferenceNav from "./PreferenceNav/PreferenceNav";
 import Split from "react-split";
@@ -28,7 +29,7 @@ export interface ISettings {
 
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
 	const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
-	let [userCode, setUserCode] = useState<string>(problem.starterCode);
+	let [userCode, setUserCode] = useState<string>();
 
 	const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px");
 
@@ -53,30 +54,30 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			return;
 		}
 		try {
-			userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
+			// userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
 			const cb = new Function(`return ${userCode}`)();
 			const handler = problems[pid as string].handlerFunction;
 
-			if (typeof handler === "function") {
-				const success = handler(cb);
-				if (success) {
-					toast.success("Congrats! All tests passed!", {
-						position: "top-center",
-						autoClose: 3000,
-						theme: "dark",
-					});
-					setSuccess(true);
-					setTimeout(() => {
-						setSuccess(false);
-					}, 4000);
+			// if (typeof handler === "function") {
+			// 	const success = handler(cb);
+			// 	if (success) {
+			// 		toast.success("Congrats! All tests passed!", {
+			// 			position: "top-center",
+			// 			autoClose: 3000,
+			// 			theme: "dark",
+			// 		});
+			// 		setSuccess(true);
+			// 		setTimeout(() => {
+			// 			setSuccess(false);
+			// 		}, 4000);
 
-					const userRef = doc(firestore, "users", user.uid);
-					await updateDoc(userRef, {
-						solvedProblems: arrayUnion(pid),
-					});
-					setSolved(true);
-				}
-			}
+			// 		const userRef = doc(firestore, "users", user.uid);
+			// 		await updateDoc(userRef, {
+			// 			solvedProblems: arrayUnion(pid),
+			// 		});
+			// 		setSolved(true);
+			// 	}
+			// }
 		} catch (error: any) {
 			console.log(error.message);
 			if (

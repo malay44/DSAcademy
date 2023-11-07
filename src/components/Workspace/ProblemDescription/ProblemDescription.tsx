@@ -229,7 +229,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 
 						{/* Examples */}
 						<div className='mt-4'>
-							{problem.examples.map((example, index) => (
+							{problem.examples?.map((example, index) => (
 								<div key={example.id}>
 									<p className='font-medium text-white '>Example {index + 1}: </p>
 									{example.img && <img src={example.img} alt='' className='mt-3' />}

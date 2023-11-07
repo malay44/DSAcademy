@@ -21,3 +21,25 @@ export default function App({ Component, pageProps }: AppProps) {
 		</RecoilRoot>
 	);
 }
+
+// firebase notes
+// 1. path in doc() always have even number of arguments 
+// doc() is used to create a reference to a document
+
+// to write to a document, use setDoc() function
+// setDoc(document ref, data)
+// to read from a document, use getDoc() function
+
+// to create a document with random id, use addDoc() function
+// addDoc(collection ref, data)
+// collection ref can be created using collection() function
+
+// getting live data from firestore
+// use onSnapshot() function
+// onSnapshot(document ref, callbackFunction)
+// callbackFunction((snapshot) => {
+//     snapshot.docs.map((doc) => {
+//	         console.log(doc.data());
+//	     });
+//	 });
+
