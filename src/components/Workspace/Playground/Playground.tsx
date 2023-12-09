@@ -3,21 +3,18 @@ import { useState, useEffect } from "react";
 import PreferenceNav from "./PreferenceNav/PreferenceNav";
 import Split from "react-split";
 import CodeMirror from "@uiw/react-codemirror";
-import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-// import { githubLight } from "@uiw/codemirror-theme-github";
-import { bbedit } from "@uiw/codemirror-theme-bbedit";
+import { githubDarkInit, githubLight } from "@uiw/codemirror-theme-github";
 import { javascript } from "@codemirror/lang-javascript";
 import EditorFooter from "./EditorFooter";
 import { Problem } from "@/utils/types/problem";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, firestore } from "@/firebase/firebase";
+import { auth } from "@/firebase/firebase";
 import { toast } from "react-toastify";
 import { problems } from "@/utils/problems";
 import { useRouter } from "next/router";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { useRecoilState } from 'recoil';
-import { themeState } from '@/atoms/themeStateAtom'; 
+import { useTheme } from 'next-themes';
+
 
 type PlaygroundProps = {
 	problem: Problem;
@@ -30,6 +27,15 @@ export interface ISettings {
 	settingsModalIsOpen: boolean;
 	dropdownIsOpen: boolean;
 }
+
+const customDarkTheme = githubDarkInit({
+	settings: {
+		background: "rgb(40,40,40)",
+		gutterBackground: "rgb(40,40,40)",
+		// gutterBorder: "#cceeff44",
+		// gutterActiveForeground: '#3e61a8',
+	},
+});
 
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
 	const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
@@ -117,7 +123,9 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 	};
 
 
-	const [currentTheme, setCurrentTheme] = useRecoilState<('light' | 'dark')>(themeState);
+	// const [currentTheme, setCurrentTheme] = useRecoilState<('light' | 'dark')>(themeState);
+	
+	const { theme } = useTheme();
 
 	return (
 		<div className='flex flex-col bg-white dark:bg-dark-layer-1 relative overflow-x-hidden'>
@@ -127,7 +135,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 				<div className='w-full overflow-auto'>
 					<CodeMirror
 						value={userCode}
-						theme={vscodeDark}
+						theme={ theme === "dark" ? customDarkTheme : githubLight }
 						onChange={onChange}
 						extensions={[javascript()]}
 						style={{ fontSize: settings.fontSize }}
