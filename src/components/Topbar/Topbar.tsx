@@ -4,7 +4,9 @@ import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Logout from "../Buttons/Logout";
 import { useSetRecoilState } from "recoil";
+import { useRecoilState } from 'recoil';
 import { authModalState } from "@/atoms/authModalAtom";
+import { selectedTabState } from '@/atoms/selectedTabAtom';
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BsList } from "react-icons/bs";
@@ -12,6 +14,10 @@ import Timer from "../Timer/Timer";
 import { useRouter } from "next/router";
 import { problems } from "@/utils/problems";
 import { Problem } from "@/utils/types/problem";
+import { themeState } from '@/atoms/themeStateAtom';
+import DarkModeToggleButton from "../Buttons/DarkModeToggleButton";
+import ProblemPage from "@/pages/dproblems/[pid]";
+
 
 type TopbarProps = {
 	problemPage?: boolean;
@@ -21,6 +27,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 	const [user] = useAuthState(auth);
 	const setAuthModalState = useSetRecoilState(authModalState);
 	const router = useRouter();
+
 
 	const handleProblemChange = (isForward: boolean) => {
 		const { order } = problems[router.query.pid as string] as Problem;
@@ -41,24 +48,32 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 		}
 	};
 
+	const [selectedTab, setSelectedTab] = useRecoilState(selectedTabState);
+
+	const handleTabClick = (tab: string) => {
+		setSelectedTab(tab);
+		router.push(`/${tab.toLowerCase()}`); // Navigate to the corresponding route
+	  };
+
 	return (
-		<nav className='relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-2 text-dark-black-7'>
+		<nav className='relative flex h-[56px] w-full shrink-0 items-center px-10 bg-white dark:bg-dark-layer-1 text-dark-gray-6 dark:text-dark-gray-7'>
 			<div className={`flex w-full items-center justify-between ${!problemPage ? "max-w-[1200px] mx-auto" : ""}`}>
-				<Link style={{font: 'Roboto Mono'}}  href='/' className='h-[22px] flex-1'>
+				<Link style={{font: 'Source Code Pro', color: '#3466F6'}}  href='/' className='h-[22px] flex-1'>
 					<p className="font-bold"> &lt;DSAcademy/&gt; </p>
 				</Link>
 
-				{problemPage && (
+
+				{problemPage &&  (
 					<div className='flex items-center gap-4 flex-1 justify-center'>
 						<div
-							className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-8 w-8 cursor-pointer'
+							className='flex items-center justify-center rounded bg-dark-gray-9 hover:dark-gray-6 dark:bg-dark-fill-3 dark:hover:bg-dark-fill-2 h-8 w-8 cursor-pointer'
 							onClick={() => handleProblemChange(false)}
 						>
 							<FaChevronLeft />
 						</div>
 						<Link
 							href='/'
-							className='flex items-center gap-2 font-medium max-w-[170px] text-dark-black-8 cursor-pointer'
+							className='flex items-center gap-2 font-medium max-w-[170px] text-dark-layer-2 dark:text-dark-gray-8 cursor-pointer'
 						>
 							<div>
 								<BsList />
@@ -66,16 +81,72 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 							<p>Problem List</p>
 						</Link>
 						<div
-							className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-8 w-8 cursor-pointer'
+							className='flex items-center justify-center rounded bg-dark-gray-9 hover:dark-gray-6 dark:bg-dark-fill-3 dark:hover:bg-dark-fill-2 h-8 w-8 cursor-pointer'
 							onClick={() => handleProblemChange(true)}
 						>
 							<FaChevronRight />
 						</div>
 					</div>
+				)}{!problemPage&&(
+					<div className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base font-medium justify-center gap-3">
+					<Link href="/" className={`${
+						  selectedTab === '/' ? 'text-blue-500 border-b-4 border-blue-500' : ''
+						} py-3 px-3 cursor-pointer`}
+						onClick={() => handleTabClick('/')}>
+					  {/* <a
+						className={`${
+						  selectedTab === '/' ? 'text-blue-500 border-b-4 border-blue-500' : ''
+						} py-3 px-3 cursor-pointer`}
+						onClick={() => handleTabClick('/')}
+					  >
+						Problems
+					  </a> */}
+					  Problems
+					</Link>
+					<Link href="/classroom" className={`py-3 px-3 ${
+						  selectedTab === 'classroom'
+							? 'text-blue-500 border-b-4 border-blue-500'
+							: ''
+						} cursor-pointer`}
+						onClick={() => handleTabClick('classroom')}>
+					  {/* <a
+						className={`py-3 px-3 ${
+						  selectedTab === 'classroom'
+							? 'text-blue-500 border-b-4 border-blue-500'
+							: ''
+						} cursor-pointer`}
+						onClick={() => handleTabClick('classroom')}
+					  >
+						Classroom
+					  </a> */}Classroom
+					</Link>
+					<Link href="/community" className={`py-3 px-3 ${
+						  selectedTab === 'community'
+							? 'text-blue-500 border-b-4 border-blue-500'
+							: ''
+						} cursor-pointer`}
+						onClick={() => handleTabClick('community')}>
+					  {/* <a
+						className={`py-3 px-3 ${
+						  selectedTab === 'community'
+							? 'text-blue-500 border-b-4 border-blue-500'
+							: ''
+						} cursor-pointer`}
+						onClick={() => handleTabClick('community')}
+					  >
+						Community
+					  </a> */}Community
+					</Link>
+				  </div>
+					  
 				)}
+
 				
 				<div className='flex items-center space-x-4 flex-1 justify-end'>
-					<div>
+				<DarkModeToggleButton/>
+					
+					{/* <div>
+						
 						<a
 							href='https://www.buymeacoffee.com/burakorkmezz'
 							target='_blank'
@@ -84,7 +155,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 						>
 							Premium
 						</a>
-					</div>
+					</div> */}
 					{!user && (
 						<Link
 							href='/auth'

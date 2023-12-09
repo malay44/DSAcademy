@@ -36,7 +36,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 
 	return (
 		<>
-			<tbody className='text-black'>
+			<tbody className='text-gray-2 dark:text-white'>
 				{problems.map((problem, idx) => {
 					const difficulyColor =
 						problem.difficulty === "Easy"
@@ -45,7 +45,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 							? "text-dark-yellow"
 							: "text-dark-pink";
 					return (
-						<tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={problem.id}>
+						<tr className={`${idx % 2 !== 1 ? "bg-dark-gray-9 dark:bg-dark-layer-1" : ""}`} key={problem.id}>
 							<th className='px-2 py-4 font-medium whitespace-nowrap text-dark-green-s'>
 								{solvedProblems.includes(problem.id) && <BsCheckCircle fontSize={"18"} width='18' />}
 							</th>
@@ -79,7 +79,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 										}
 									/>
 								) : (
-									<p className='text-black'>Coming soon</p>
+									<p className='text-gray-500'>Coming soon</p>
 								)}
 							</td>
 						</tr>
