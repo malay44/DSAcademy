@@ -1,3 +1,4 @@
+import Button from '@/components/Buttons/Button';
 import List from '@/components/List/List';
 import ClassNavAbove from '@/components/Navbar/ClassNavAbove';
 import ClassNavBelow from '@/components/Navbar/ClassNavBelow';
@@ -38,6 +39,10 @@ const class1:React.FC<class1Props> = () => {
         {/* Classwork */}
 
         <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3 '>
+            <div className='flex gap-4'>
+               <Button>Create Contest</Button>
+               <Button>Create Quiz</Button>
+            </div>
             <List/>
         </div>
 
