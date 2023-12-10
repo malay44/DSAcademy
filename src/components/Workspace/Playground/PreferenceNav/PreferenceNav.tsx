@@ -38,7 +38,7 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({ setSettings, settings }) 
 	}, [isFullScreen]);
 
 	return (
-		<div className='flex items-center justify-between bg-dark-layer-2 h-11 w-full '>
+		<div className='flex items-center justify-between dark:bg-dark-layer-2 bg-[#f3f4f8] h-11 w-full '>
 			<div className='flex items-center text-dark-layer-1 dark:text-white'>
 				<button className='flex cursor-pointer items-center rounded focus:outline-none bg-white dark:bg-dark-fill-3 dark:text-dark-label-2 text-dark-layer-1 hover:bg-dark-fill-4  px-2 py-1.5 font-medium'>
 					<div className='flex items-center px-1'>

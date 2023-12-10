@@ -36,11 +36,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-	background: #282828;
+	/* background: #282828; */
+	@apply dark:bg-[#282828] bg-[#ffffff];
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #4d4d4d;
+	/* background: #4d4d4d; */
+	@apply dark:bg-[#4d4d4d] bg-[#c4c4c4];
+	border-radius: 0.5rem;
 }
 
 
@@ -60,7 +63,7 @@ body {
 }
 
 .gutter {
-	background-color: rgb(26, 26, 26);
+	@apply dark:bg-[#1a1a1a] bg-[#f3f4f8];
 	background-repeat: no-repeat;
 	background-position: 50%;
 }
@@ -88,25 +91,22 @@ code {
 	padding: 0.125rem;
 	letter-spacing: 1px;
 	white-space: pre-wrap;
-	background-color: hsla(0, 0%, 100%, 0.07);
-	border-color: rgba(247, 250, 255, 0.12);
-	color: rgba(239, 241, 246, 0.75);
+	@apply dark:bg-[#ffffff1a] dark:text-[#eff1f6bf] bg-[#eff1f6bf] text-[#1d1d1d] border-[#f7faff1f];
 }
 
 .example-card pre {
-	background-color:hsla(0, 0%, 100%, 0.1);
 	border-radius: 0.5rem;
-	color: rgba(239, 241, 246, 0.75);
 	font-size: 0.98rem;
 	line-height: 1.25rem;
 	margin-bottom: 1rem;
 	margin-top: 1rem;
 	padding: 1rem;
 	white-space: pre-wrap;
+	@apply dark:bg-[#ffffff1a] dark:text-[#eff1f6bf] bg-dark-gray-8 text-[#1d1d1d];
 }
 .example-card pre strong {
-	color: white;
 	font-size: 1rem;
+	@apply dark:text-[#eff1f6] text-[#1d1d1d];
 }
 
 .form{

@@ -156,7 +156,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 	return (
 		<div className='bg-white dark:bg-dark-layer-1'>
 			{/* TAB */}
-			<div className='flex h-11 w-full items-center pt-2 bg-dark-layer-2 dark:text-white text-dark-layer-1 overflow-x-hidden'>
+			<div className='flex h-11 w-full items-center pt-2 dark:bg-dark-layer-2 bg-[#f3f4f8] dark:text-white text-dark-layer-1 overflow-x-hidden'>
 				<div className={"bg-white dark:bg-dark-layer-1 rounded-t-[5px] px-5 py-[10px] text-xs font-medium dark:font-normal cursor-pointer"}>
 					Description
 				</div>
