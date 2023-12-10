@@ -1,12 +1,17 @@
 import List from '@/components/List/List';
 import ClassNavAbove from '@/components/Navbar/ClassNavAbove';
 import ClassNavBelow from '@/components/Navbar/ClassNavBelow';
+import Announcement from '@/components/Stream/Announcement';
+import Banner from '@/components/Stream/Banner';
+import CreateAnnouncement from '@/components/Stream/CreateAnnouncement';
+import Upcoming from '@/components/Stream/Upcoming';
 import Topbar from '@/components/Topbar/Topbar';
 import { auth, firestore } from '@/firebase/firebase';
 import classroomDetails from '@/utils/types/classroom/classroomDetails';
 import contestDetails from '@/utils/types/contest/contestDetails';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { get } from 'http';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -75,7 +80,7 @@ const Class1: React.FC<class1Props> = () => {
 
             {/* Stream  */}
 
-            {/* <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3 '>
+            <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3 '>
             <Banner/>
             <div className='flex gap-7 w-full'>
                 <div className='relative flex flex-col gap-5 w-4/5 '>
@@ -86,18 +91,20 @@ const Class1: React.FC<class1Props> = () => {
                     <Upcoming/>
                 </div>
             </div>
-        </div> */}
+        </div>
 
             {/* Classwork */}
 
-            <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3 '>
+            {/* <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3 '>
                 <div className='border-b-2 border-b1 pb-2'>
                     <h2 className='text-primary-blue text-xl font-semibold'>Contests</h2>
                 </div>
                 {contests && contests.map((contest) => (
-                    <List key={contest.contestId} title={contest.description} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
+                    <Link key={contest.contestId} href={`${router.pathname}/${contest.contestId}`}>
+                      <List title={contest.description} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
+                  </Link>
                 ))}
-            </div>
+            </div> */}
 
             {/* People */}
 

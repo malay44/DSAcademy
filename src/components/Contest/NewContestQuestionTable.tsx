@@ -43,7 +43,7 @@ const NewContestQuestionTable: React.FC<NewContestQuestionTableProps> = ({ quest
           </section>
         </section>
           {questions.map((q, index) => (
-            <section className='flex justify-between  text-dark-layer-1'>  
+            <section key={index} className='flex justify-between  text-dark-layer-1'>  
               <section className='flex justify-between w-1/5'>
                 <div >{index+1}</div>
                 <div >{q.name}</div>

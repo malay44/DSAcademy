@@ -92,7 +92,7 @@ const JoinClassButton: React.FC<JoinClassButtonProps> = () => {
   };
 
   return (
-    <div>
+    <div className="flex gap-4">
       <input
         value={inputValue}
         onChange={handleInputChange}

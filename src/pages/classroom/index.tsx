@@ -52,7 +52,7 @@ const Classroom: React.FC = () => {
         <ClassroomNav />
 
         <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex  items-start gap-14  '>
-          {classrooms.length === 0 && <NoCard />}
+          {classrooms.length === 0 && <NoCard cardHeading='No Class :(' cardDescription='Join class or Create a new Class' cardButton={false}/>}
           {classrooms.map((classroom) => (
             <Card key={classroom.classroomId} classroom={classroom} />
           ))}

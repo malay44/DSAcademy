@@ -13,7 +13,7 @@ const NoCard:React.FC<NoCardProps> = ({cardHeading, cardDescription, cardButton}
             <h2 className='font-semibold text-2xl'>
                 {cardHeading}
             </h2>
-                {cardButton ? <button className='bg-primary-blue hover:bg-blue-600 text-white border-b2 h-10 min-w-[8rem] rounded-lg border border-b2 shadow-md'> Refresh </button> : <p className='font-semibold text-xl'>{cardDescription}</p>}
+                {cardButton ? <button className='bg-primary-blue hover:bg-blue-600 text-white h-10 min-w-[8rem] rounded-lg border border-b2 shadow-md'> Refresh </button> : <p className='font-semibold text-xl'>{cardDescription}</p>}
         </div>
     )
 }
