@@ -92,7 +92,7 @@ const Index: React.FC<IndexProps> = () => {
                         </Button>
                     </div>
                     {contests && contests.map((contest) => (
-                        <Link key={contest.contestId} href={`${router.pathname}/${contest.contestId}`}>
+                        <Link key={contest.contestId} href={`/classroom/${classId}/${contest.contestId}`}>
                             <List title={contest.description} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
                         </Link>
                     ))}
