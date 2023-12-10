@@ -1,7 +1,7 @@
 import contestDetails from "../contest/contestDetails";
 import classroomParticipant from "./classroomParticipantDetails";
 
-export type classroomDetails = {
+export type classrooms = {
     classroomId: string;     // PK
     creatorId: string;      // FK from userID
     classroomName: string;  
@@ -12,3 +12,5 @@ export type classroomDetails = {
     contests: string[];
     code: string;
 };
+
+export default classrooms;
