@@ -1,5 +1,5 @@
 import contestDetails from "../contest/contestDetails";
-import classroomParticipant from "./classroomParticipantDetails";
+// import classroomParticipant from "./classroomParticipantDetails";
 
 export type classroomDetails = {
     classroomId: number;
@@ -7,7 +7,6 @@ export type classroomDetails = {
     classroomName: string;
     description: string;
     createdAt: Date;
-    participants: classroomParticipant[];
-    contests: contestDetails[];
-    
+    participants: string[];
+    contests: string[];
 };

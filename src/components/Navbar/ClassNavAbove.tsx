@@ -3,10 +3,10 @@ import React from 'react';
 
 
 type ClassNavAboveProps = {
-  
+  classroomName: string;
 };
 
-const ClassNavAbove:React.FC<ClassNavAboveProps> = () => {
+const ClassNavAbove:React.FC<ClassNavAboveProps> = ({ classroomName }: ClassNavAboveProps) => {
   
   return (
     <nav className=' relative flex h-[56px] w-full shrink-0 items-center px-10 bg-white dark:bg-dark-layer-1 text-dark-gray-6 dark:text-dark-gray-7'>
@@ -19,7 +19,7 @@ const ClassNavAbove:React.FC<ClassNavAboveProps> = () => {
         </li>
         <li className='hover:text-dark-layer-1'>
           <Link href="/classroom/class1">
-            Class1
+            {classroomName}
           </Link>
         </li>
       </ul>

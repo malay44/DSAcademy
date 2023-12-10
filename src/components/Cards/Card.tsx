@@ -1,20 +1,25 @@
+import { classroomDetails } from '@/utils/types/classroom/classroomDetails';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { AiOutlineDelete } from "react-icons/ai";
 
 type CardProps = {
-    
+    classroom: classroomDetails;
 };
 
-const Card:React.FC<CardProps> = () => {
+const Card:React.FC<CardProps> = ({classroom} : CardProps) => {
     
     return (
       <div className="flex flex-col h-60 w-80 bg-white shadow-md border border-gray-200 rounded-lg max-w-sm dark:bg-gray-800 dark:border-gray-700">
-          <Link href="/classroom/class1" className='h-2/5 w-full rounded-t-lg bg-b1 text-white' >
+          <Link href={`/classroom/${classroom.classroomId}`} className='h-2/5 w-full rounded-t-lg bg-b1 text-white' >
                 <div className="p-5">
-                      <h5 className="dark:text-gray-900 font-semibold text-2xl tracking-tight mb-2 text-white">Class1</h5>
-                      <p className="font-normal dark:text-gray-700 mb-3 ">Section1</p>
+                      <h5 className="dark:text-gray-900 font-semibold text-2xl tracking-tight mb-2 text-white">
+                        {classroom.classroomName}
+                      </h5>
+                      <p className="font-normal dark:text-gray-700 mb-3 ">
+                        {classroom.description}
+                      </p>
                 </div>
           </Link>
           
