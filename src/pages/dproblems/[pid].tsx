@@ -31,7 +31,7 @@ const ProblemPage: React.FC<ProblemPageProps> = () => {
                     return;
                 }
                 const data = result.data();
-                console.log(data);
+                // console.log(data);
                 setProblem(data as Problem);
                 setLoading(false);
               } catch (error) {
