@@ -38,7 +38,7 @@ const JoinClassButton: React.FC<JoinClassButtonProps> = () => {
       // adding the participant to the classroom
       const val = inputValue;
       const classrooms = query(
-        collection(firestore, "classroomDetails"),
+        collection(firestore, "classrooms"),
         where("code", "==", val)
       );
       const querySnapshot = await getDocs(classrooms); // getting all the classrooms
@@ -53,17 +53,14 @@ const JoinClassButton: React.FC<JoinClassButtonProps> = () => {
 
         querySnapshot.forEach(async (docSnapshot) => {
           const docId = docSnapshot.id;
-          const docref = doc(collection(firestore, "classroomDetails"), docId);
+          const docref = doc(collection(firestore, "classrooms"), docId);
 
           try {
             await updateDoc(docref, {
               // updating classroom document
               participants: arrayUnion(participant),
             });
-            const userDoc = doc(
-              collection(firestore, "classroomDetails"),
-              user?.uid
-            );
+            const userDoc = doc(collection(firestore, "users"), user?.uid);
             try {
               await updateDoc(userDoc, {
                 // updating userDetails document
