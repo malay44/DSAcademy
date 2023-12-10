@@ -8,7 +8,7 @@ export type classrooms = {
     section: number;
     description: string;
     createdAt: Date;
-    participants: classroomParticipant[];
+    participants: string[];
     contests: string[];
     code: string;
 };

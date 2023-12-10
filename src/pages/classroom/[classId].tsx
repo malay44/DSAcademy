@@ -3,7 +3,7 @@ import ClassNavAbove from '@/components/Navbar/ClassNavAbove';
 import ClassNavBelow from '@/components/Navbar/ClassNavBelow';
 import Topbar from '@/components/Topbar/Topbar';
 import { auth, firestore } from '@/firebase/firebase';
-import { classroomDetails } from '@/utils/types/classroom/classroomDetails';
+import classroomDetails from '@/utils/types/classroom/classroomDetails';
 import contestDetails from '@/utils/types/contest/contestDetails';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { get } from 'http';
@@ -36,28 +36,32 @@ const Class1: React.FC<class1Props> = () => {
 
                 const classroomref = doc(firestore, 'classrooms', classId as string);
                 const classroomDocs = await getDoc(classroomref);
+                if (!classroomDocs.exists()) return;
                 setClassroomDetails(classroomDocs.data() as classroomDetails);
-                console.log(classroomDocs.data());
+
+                // getting contests data
+
+                if (!classroomDocs.data().contests || classroomDocs.data().contests.length === 0) {
+                    console.log('no contests');
+                    return;
+                };
+                const contestsQuery = query(
+                    collection(firestore, 'contest'),
+                    where('contestId', 'in', classroomDocs.data().contests)
+                );
+                const contestDocs = await getDocs(contestsQuery);
+                setContests(contestDocs.docs.map(doc => doc.data()) as contestDetails[]);
+                console.log(contestDocs.docs.map(doc => doc.data()));
+
             }
             else {
                 console.log('userDoc does not exist');
                 toast.error("cannot find userDoc", { position: "top-left", theme: "dark" });
             }
         };
-        const getContestData = async () => {
-            if (!classroomDetails.contests || classroomDetails.contests.length === 0) return;
-            const contestsQuery = query(
-                collection(firestore, 'contest'),
-                where('contestId', 'in', classroomDetails.contests)
-            );
-            const contestDocs = await getDocs(contestsQuery);
-            setContests(contestDocs.docs.map(doc => doc.data()) as contestDetails[]);
-            console.log(contestDocs.docs.map(doc => doc.data()));
-        }
 
         if (user) {
             getClassroomData();
-            getContestData();
         }
         if (!user) setClassroomDetails({} as classroomDetails);
     }, [user]);
@@ -91,7 +95,7 @@ const Class1: React.FC<class1Props> = () => {
                     <h2 className='text-primary-blue text-xl font-semibold'>Contests</h2>
                 </div>
                 {contests && contests.map((contest) => (
-                    <List key={contest.contestId} title={contest.description} dueDate={"due on "+contest.startTime.toDate().toUTCString()} />
+                    <List key={contest.contestId} title={contest.description} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
                 ))}
             </div>
 
