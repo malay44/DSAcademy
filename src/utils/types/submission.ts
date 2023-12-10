@@ -1,9 +1,9 @@
 import { Timestamp } from "firebase/firestore";
 
 type submission = {
-    submissionId: number;
-    questionId: number;
-    participantId: number;
+    submissionId: string;
+    questionId: string;
+    participantId: string;
     code: string;
     languageId: number;
     language: string;

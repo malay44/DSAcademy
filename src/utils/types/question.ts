@@ -1,12 +1,13 @@
 import { Timestamp } from "firebase/firestore";
-import Userdetails from "./userDetails";
-import submission from "./submission";
+
 
 export type questionDetails = {
-    questionId: number;
-    creatorId: Userdetails;
+    questionId: string;
+    creatorId: string;
     Name: string;
     Description: string;
+    inputFormat: string;
+    outputFormat: string;
     Points: number;
     updatedAt: Timestamp;
     editorialCode: string;

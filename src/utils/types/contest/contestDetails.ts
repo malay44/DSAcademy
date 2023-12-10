@@ -4,17 +4,17 @@ import Userdetails from "../userDetails";
 import submission from "../submission";
 
 type contestParticipantDetails = {
-    userId: Userdetails;
+    userId: string;
     points: number;
     submissions: submission[];
     rank: number;
 };
 
 type contestDetails = {
-    contestId: number;
-    creator: Userdetails;
+    contestId: string;
+    creator: string;
     description: string;
-    questions: questionDetails[];
+    questions: string[];    // store question IDs
     participants: contestParticipantDetails[];
     createdAt: Date;
     startTime: Timestamp;
