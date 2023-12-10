@@ -9,6 +9,6 @@ export type classroomDetails = {
     description: string;
     createdAt: Date;
     participants: classroomParticipant[];
-    contests: contestDetails[];
+    contests: string[];
     code: string;
 };

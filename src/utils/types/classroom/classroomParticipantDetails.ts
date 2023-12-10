@@ -1,7 +1,7 @@
-import Userdetails from "../userDetails";
 
 type classroomParticipant = {
-    user: Userdetails;
+    userId: string;
     role: string;
-    
 };
+
+export default classroomParticipant;
