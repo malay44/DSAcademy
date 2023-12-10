@@ -107,3 +107,17 @@ code {
 	font-size: 1rem;
 }
 
+.form{
+	margin: auto;
+	width: 25%;
+	border: 2px solid;
+	display: flex;
+	flex-direction: column;
+}
+
+.createclass1{
+	display: flex;
+	justify-content: space-between;
+}
+
+
