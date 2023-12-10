@@ -114,3 +114,10 @@ code {
 	display: flex;
 	flex-direction: column;
 }
+
+.createclass1{
+	display: flex;
+	justify-content: space-between;
+}
+
+

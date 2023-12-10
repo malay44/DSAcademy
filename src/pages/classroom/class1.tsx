@@ -7,6 +7,7 @@ import CreateAnnouncement from '@/components/Stream/CreateAnnouncement';
 import Upcoming from '@/components/Stream/Upcoming';
 import Topbar from '@/components/Topbar/Topbar';
 import React from 'react';
+import CreateClass from '@/components/Modals/CreateClass';
 
 type class1Props = {
     
@@ -58,7 +59,6 @@ const class1:React.FC<class1Props> = () => {
         {/* <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3 '>
 
         </div> */}
-
       </main>
     </>
 }
