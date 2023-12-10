@@ -6,6 +6,7 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import Userdetails from "@/utils/types/userDetails";
 
 type SignupProps = {};
 
@@ -28,6 +29,12 @@ const Signup: React.FC<SignupProps> = () => {
 			toast.loading("Creating your account", { position: "top-center", toastId: "loadingToast" });
 			const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password);
 			if (!newUser) return;
+			// uid: string;
+			// email: string;
+			// displayName: string;
+			// college: string;
+			// password: string;
+			// classrooms: string[];
 			const userData = {
 				uid: newUser.user.uid,
 				email: newUser.user.email,
@@ -35,6 +42,7 @@ const Signup: React.FC<SignupProps> = () => {
 				createdAt: Date.now(),
 				updatedAt: Date.now(),
 				likedProblems: [],
+				classrooms: [],
 				dislikedProblems: [],
 				solvedProblems: [],
 				starredProblems: [],
@@ -61,14 +69,40 @@ const Signup: React.FC<SignupProps> = () => {
                     <span className="text-gray-700 font-medium">Continue with Google</span>
                 </button>
                 <span className="mb-2 text-gray-900">Or</span>
-                <form>
-                    <input type="text" className="w-full px-6 py-3 mb-2 border border-slate-600 rounded-lg font-medium " placeholder="Email" value="" />
-                    <input type="password" className="w-full px-6 py-3 mb-2 border border-slate-600 rounded-lg font-medium " placeholder="Password" value="" />
-                    <input type="password" className="w-full px-6 py-3 mb-2 border border-slate-600 rounded-lg font-medium " placeholder="Confirm password" value="" />
-                    <button className="bg-slate-500 hover:bg-slate-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px]">Log In</button>
+                <form onSubmit={handleRegister}>
+                    <input 
+						onChange={handleChangeInput}
+						type='email'
+						name='email'
+						id='email'
+						placeholder="Email" 
+						className="w-full px-6 py-3 mb-2 border border-slate-600 rounded-lg font-medium " 
+					/>
+                    <input 
+						onChange={handleChangeInput}
+						type='displayName'
+						name='displayName'
+						id='displayName'
+						placeholder="Display Name" 
+						className="w-full px-6 py-3 mb-2 border border-slate-600 rounded-lg font-medium " 
+					/>
+                    <input 
+						onChange={handleChangeInput}
+						type='password'
+						name='password'
+						id='password'
+						placeholder="Password" 
+						className="w-full px-6 py-3 mb-2 border border-slate-600 rounded-lg font-medium " 
+					/>
+                    <button 
+						type='submit'
+						className="bg-slate-500 hover:bg-slate-700 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px]"
+					>
+						{loading ? "Registering..." : "Register"}
+					</button>
                 </form>
                 <p className="text-center mt-3 text-[14px]">Already have an account?
-                    <a href="/signup" className="text-gray-600">Log In</a>
+                    <a href="#" onClick={handleClick} className="text-gray-600">Log In</a>
                 </p>
                 <p className="text-center mt-3 text-[14px]">By clicking continue, you agree to our
                     <a href="/terms" className="text-gray-600">Terms of Service</a> and <a href="/privacy" className="text-gray-600">Privacy Policy</a>.

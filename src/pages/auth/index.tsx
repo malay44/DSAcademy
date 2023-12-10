@@ -1,15 +1,12 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import AuthModal from "@/components/Modals/AuthModal";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import LoginNavbar from "@/components/Navbar/LoginNavbar";
-import SignInDes1 from '../../../public/SignIn1.svg';
-import { relative } from "path";
 import LoginForm from "@/components/Modals/LoginForm";	
+import SignupForm from "@/components/Modals/SignupForm";
 
 type AuthPageProps = {};
 
@@ -32,7 +29,7 @@ const AuthPage: React.FC<AuthPageProps> = () => {
 				<div className='max-w-7xl mx-auto'>
 					<LoginNavbar />
 				</div>
-				<LoginForm/>
+				{authModal.type === "login" ? <LoginForm/> : <SignupForm/>}
 			</div>
 		</>
 	);

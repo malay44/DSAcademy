@@ -66,6 +66,13 @@ const JoinClassButton: React.FC<JoinClassButtonProps> = () => {
                 // updating userDetails document
                 classrooms: arrayUnion(docId),
               });
+              toast.success("Class Joined Successfully", {
+                position: "top-center",
+                autoClose: 3000,
+                theme: "dark",
+              });
+              // refresh the page
+              window.location.reload();
             } catch (err) {
               console.log(err);
             }

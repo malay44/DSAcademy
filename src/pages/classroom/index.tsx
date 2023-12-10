@@ -7,7 +7,7 @@ import { collection, query, where, doc, getDoc, getDocs } from 'firebase/firesto
 import { firestore } from '@/firebase/firebase';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { classroomDetails } from '@/utils/types/classroom/classroomDetails';
+import classroomDetails from '@/utils/types/classroom/classroomDetails';
 import { toast } from 'react-toastify';
 
 const Classroom: React.FC = () => {

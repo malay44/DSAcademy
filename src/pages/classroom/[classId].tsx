@@ -31,7 +31,11 @@ const Class1: React.FC<class1Props> = () => {
 
             if (userDoc.exists()) {
                 const classroomsId = await userDoc.data().classrooms;
-                if (!classroomsId || classroomsId.length === 0) return;
+                if (!classroomsId || classroomsId.length === 0) {
+                    console.log('no classrooms');
+                    toast.info("You are not enrolled in this classroom", { position: "top-left", theme: "dark" });
+                    return;
+                };
                 console.log(classroomsId)
 
                 const classroomref = doc(firestore, 'classrooms', classId as string);

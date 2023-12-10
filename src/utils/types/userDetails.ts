@@ -1,12 +1,17 @@
 
 type Userdetails = {
-    User_id: string;
-    username: string;
+    uid: string;
+    displayName: string;
     email: string;
     DOB: Date;
     college: string;
-    password: string;
     classrooms: string[];
+    createdAt: Date;
+    updatedAt: Date;
+    likedProblems: [],
+    dislikedProblems: [],
+    starredProblems: [],
+    solvedProblems: [],
 };
 
 export default Userdetails;

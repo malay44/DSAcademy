@@ -1,4 +1,4 @@
-import { classroomDetails } from '@/utils/types/classroom/classroomDetails';
+import classroomDetails from '@/utils/types/classroom/classroomDetails';
 import Link from 'next/link';
 import React from 'react';
 import { AiOutlineDelete } from "react-icons/ai";
