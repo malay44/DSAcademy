@@ -10,7 +10,6 @@ type contestProps = {
 };
 
 const contest: React.FC<contestProps> = () => {
-
     return (<main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen'>
         <Topbar />
         <nav className='relative flex h-[56px] w-full shrink-0 items-center px-10 bg-white dark:bg-dark-layer-1 text-dark-gray-6 dark:text-dark-gray-7'>

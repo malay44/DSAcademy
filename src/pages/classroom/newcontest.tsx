@@ -21,14 +21,15 @@ const newcontest:React.FC<newcontestProps> = () => {
     return <>
     <main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen '>
         <Topbar />
-        <ClassNavAbove/>
+        <ClassNavAbove classroomName='1'/>
         <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3  pr-3  overflow-auto'>
         <Input label="Contest Name" variant="primary" placeholder="Enter contest name" required />
         <div className='flex justify-between items-center border-b-2 b border-primary-blue pb-2'>
             <h3 className='text-primary-blue font-medium text-xl'>Questions</h3>
             <Button>Add New</Button>
         </div>
-        { questionsData && (<NewContestQuestionTable questions={questionsData}/>) }
+        { questionsData && (<NewContestQuestionTable questions={questionsData}/>) }    
+        
         <NewProblem/>
         
         </div>
