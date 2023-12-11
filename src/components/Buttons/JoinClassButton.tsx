@@ -67,7 +67,12 @@ const JoinClassButton: React.FC<JoinClassButtonProps> = () => {
           const docId = docSnapshot.id;
           const docref = doc(collection(firestore, "classrooms"), docId);
           const docData = await getDoc(docref);
-          if(docData.data()?.participants.filter((element:any) => element.userId === user?.uid)){
+          // checking if the user is already a participant
+          if (
+            docData.data()?.participants.some(
+              (participant: any) => participant.userId === user?.uid
+            )
+          ) {
             toast.error("You are already a participant", {
               position: "top-center",
               autoClose: 3000,
