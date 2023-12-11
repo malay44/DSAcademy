@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import ProblemsTable from '@/components/ProblemsTable/ProblemsTable';
-import ContestProblemTable from '@/components/ProblemsTable/ContestProblemTable';
 
 type ProblemsMainProps = {
   isContest?: boolean;
@@ -63,7 +62,7 @@ const ProblemsMain: React.FC<ProblemsMainProps> = ({ isContest }) => {
               </tr>
             </thead>
           )}
-          <ContestProblemTable setLoadingProblems={setLoadingProblems} isContest={isContest} />
+          <ProblemsTable setLoadingProblems={setLoadingProblems} isContest={isContest} />
         </table>
       </div>
     </div>
