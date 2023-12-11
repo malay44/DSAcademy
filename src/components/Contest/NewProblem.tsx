@@ -13,7 +13,7 @@ type NewProblemProps = {
 const NewProblem: React.FC<NewProblemProps> = ({formData, handleInputChange, handleSubmit} : NewProblemProps) => {
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
             <Input
                 label="Question Name"
                 variant="primary"
@@ -78,11 +78,69 @@ const NewProblem: React.FC<NewProblemProps> = ({formData, handleInputChange, han
                 onChange={handleInputChange}
             />
             <div className="flex justify-between">
-                <div className="flex justify-between w-1/5">
-                    <h3 className="text-gray-700 font-medium text-lg">Points</h3>
-                    <DropdownMenu />
-                </div>
-                <div className="flex gap-4">
+                    <div className='w-2/5'>
+                    <Input
+                        
+                        label="Start Date"
+                        variant="primary"
+                        placeholder="Enter start date"
+                        required
+                        name="StartDate"
+                        value={formData.Points}
+                        onChange={handleInputChange}
+                    />
+                    </div>
+                    <div className='w-2/5'>
+                    <Input
+                        label="EndDate"
+                        variant="primary"
+                        placeholder="Enter end date"
+                        required
+                        name="EndDate"
+                        value={formData.Points}
+                        onChange={handleInputChange}
+                    />
+                    </div>
+            </div>
+
+            <div className="flex justify-between">
+                    <div className='w-2/5'>
+                    <Input
+                        label="Start Time"
+                        variant="primary"
+                        placeholder="Enter start time"
+                        required
+                        name="StartTime"
+                        value={formData.Points}
+                        onChange={handleInputChange}
+                    />
+                    </div>
+                    <div className='w-2/5'>
+                    <Input
+                        label="EndTime"
+                        variant="primary"
+                        placeholder="Enter end time"
+                        required
+                        name="EndTime"
+                        value={formData.Points}
+                        onChange={handleInputChange}
+                    />
+                    </div>
+            </div>
+
+                <div className='flex items-center justify-between'>
+                    <div className='w-2/5'>
+                        <Input
+                            label="Points"
+                            variant="primary"
+                            placeholder=""
+                            required
+                            name="Points"
+                            value={formData.Points}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='gap-6 flex items-center justify-evenly'>
                     <Button className="h-10 min-w-[8rem] rounded-lg border-2 bg-dark-gray-9 shadow-md">
                         Close
                     </Button>
@@ -91,9 +149,12 @@ const NewProblem: React.FC<NewProblemProps> = ({formData, handleInputChange, han
                     >
                         Save
                     </Button>
+                    </div>
+                    
                 </div>
-            </div>
-        </form>
+
+                
+            </form>
     );
 };
 

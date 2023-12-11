@@ -70,14 +70,38 @@ const Grades: React.FC<GradesProps> = () => {
                 <ClassNavAbove classroomName={classDetails.classroomName} />
                 <ClassNavBelow />
                 <div className='flex-1 w-full max-w-[1200px] mx-auto py-5 flex flex-col gap-3 '>
-                    <div className='border-b-2 border-b1 pb-2'>
-                        <h2 className='text-primary-blue text-xl font-semibold'>Grades</h2>
+                    <div className='flex justify-between'>
+                        <h1 className='text-primary-blue text-xl font-bold'>Total Marks </h1>
+                        <h1 className='text-primary-blue text-xl font-bold'>100/100</h1>
                     </div>
-                    {/* {contests && contests.map((contest) => (
-                        <Link key={contest.contestId} href={`${router.pathname}/${contest.contestId}`}>
-                            <List title={contest.description} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
-                        </Link>
-                    ))} */}
+                    <div className='border-b-2 border-b1 pb-2'>
+                        <div className='flex justify-between'>
+                            <h2 className='text-primary-blue text-l font-semibold'>Contests</h2>
+                            <h2 className='text-primary-blue text-l font-semibold'>50/50</h2>
+                        </div>
+                    </div>
+                    <div>
+                        <div className='flex justify-between items-center'>
+                            <Link key={"Contests"} href={"Contest ID"}>
+                                <List title={"Contest 1"} dueDate={""} />
+                            </Link>
+                            <h1>10/10</h1>
+                        </div>
+                    </div>
+                    <div className='border-b-2 border-b1 pb-2'>
+                        <div className='flex justify-between'>
+                            <h2 className='text-primary-blue text-l font-semibold'>Assignments</h2>
+                            <h2 className='text-primary-blue text-l font-semibold'>50/50</h2>
+                        </div>
+                    </div>
+                    <div>
+                        <div className='flex justify-between items-center'>
+                            <Link key={"Assignments"} href={"Assignment ID"}>
+                                <List title={"Assignment 1"} dueDate={""} />
+                            </Link>
+                            <h1>10/10</h1>
+                        </div>
+                    </div>
                 </div>
             </main>
         </>

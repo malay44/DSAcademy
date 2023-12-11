@@ -1,5 +1,5 @@
 // dproblem/[pid].tsx
-"use server";
+"use client";
 import Topbar from "@/components/Topbar/Topbar";
 import Workspace from "@/components/Workspace/Workspace";
 import { firestore } from "@/firebase/firebase";
@@ -23,7 +23,7 @@ const ProblemPage: React.FC<ProblemPageProps> = () => {
 		const getProblems = async () => {
 			setLoading(true);
             try {
-                const problemRef = doc(firestore, "problems", pid as string);
+                const problemRef = doc(firestore, "questions", pid as string);
                 const result = await getDoc(problemRef);
                 if (!result.exists()) {
                     // display default 404 page

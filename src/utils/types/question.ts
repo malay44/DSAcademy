@@ -14,4 +14,5 @@ export type questionDetails = {
     testcases: string;
     testcases_sol: string;
     difficultyLevel: string;
+    tag: string;
 };

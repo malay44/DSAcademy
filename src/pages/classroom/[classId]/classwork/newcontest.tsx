@@ -9,7 +9,6 @@ import { auth, firestore } from '@/firebase/firebase';
 import classrooms from '@/utils/types/classroom/classroomDetails';
 import contestDetails from '@/utils/types/contest/contestDetails';
 import { questionDetails } from '@/utils/types/question';
-import { time } from 'console';
 import { Timestamp, collection, doc, getDoc, runTransaction, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -63,6 +62,7 @@ const Newcontest = () => {
         testcases: '',
         testcases_sol: '',
         difficultyLevel: '',
+        tag: '',
     });
 
     const handleFormInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -161,19 +161,25 @@ const Newcontest = () => {
             <ClassNavAbove classroomId={classroomDetails.classroomId} classroomName={classroomDetails.classroomName} />
             <div
                 className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3  pr-3  overflow-auto'>
-                <Input
-                    onChange={handleContestNameChange}
-                    label="Contest Name"
-                    variant="primary"
-                    placeholder="Enter contest name"
-                    required
-                />
-                <Button
-                    type='submit'
-                    onClick={handleAddContest}
-                >
-                    Add Contest
-                </Button>
+                <div className='flex items-center justify-between'>
+                    <div className='w-4/5'>
+                        <Input
+                            onChange={handleContestNameChange}
+                            label="Contest Name"
+                            variant="primary"
+                            placeholder="Enter contest name"
+                            required
+                        />
+                    </div>
+                    <div className=''>
+                    <Button
+                        type='submit'
+                        onClick={handleAddContest}
+                    >
+                        Add Contest
+                    </Button>
+                    </div>
+                </div>
                 <div className='flex justify-between items-center border-b-2 b border-primary-blue pb-2'>
                     <h3 className='text-primary-blue font-medium text-xl'>Questions</h3>
                 </div>

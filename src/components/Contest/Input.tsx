@@ -9,8 +9,8 @@ const Input: React.FC<InputProps> = ({ label, variant = 'primary', ...props }) =
   const WrapperComponent: React.ElementType = variant === 'primary' ? 'div' : 'label';
 
   return (
-    <div className={`flex flex-col gap-4 ${variant === 'secondary' ? 'mb-4' : 'mb-4'}`}>
-      <WrapperComponent className={`flex items-start justify-center ${variant === 'secondary' ? 'mb-2' : ''}`}>
+    <div className={`flex flex-col gap-4 ${variant === 'secondary' ? '' : ''}`}>
+      <WrapperComponent className={`flex items-start justify-center ${variant === 'secondary' ? '' : ''}`}>
         <span className='text-gray-700 font-medium text-lg p-1 mr-2 w-44 '>{label}</span>
         {variant === 'secondary' && <br />}
         <textarea
