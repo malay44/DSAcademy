@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import classroomDetails from '@/utils/types/classroom/classroomDetails';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 const Classroom: React.FC = () => {
 
@@ -51,7 +52,7 @@ const Classroom: React.FC = () => {
         <Topbar />
         <ClassroomNav />
 
-        <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex  items-start gap-14  '>
+        <div className={`flex-1 w-full max-w-[1200px] mx-auto  py-5 flex ${classrooms.length===0 ? 'items-center justify-center' : 'items-start justify-between'}  `}>
           {classrooms.length === 0 && <NoCard cardHeading='No Class :(' cardDescription='Join class or Create a new Class' cardButton={false}/>}
           {classrooms.map((classroom) => (
             <Card key={classroom.classroomId} classroom={classroom} />
