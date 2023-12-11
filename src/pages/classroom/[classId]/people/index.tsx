@@ -71,13 +71,23 @@ const People: React.FC<PeopleProps> = () => {
                 <ClassNavBelow />
                 <div className='flex-1 w-full max-w-[1200px] mx-auto py-5 flex flex-col gap-3 '>
                     <div className='border-b-2 border-b1 pb-2'>
-                        <h2 className='text-primary-blue text-xl font-semibold'>People</h2>
+                        <h2 className='text-primary-blue text-xl font-semibold'>Faculty</h2>
                     </div>
                     {/* {contests && contests.map((contest) => (
                         <Link key={contest.contestId} href={`${router.pathname}/${contest.contestId}`}>
                             <List title={contest.description} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
                         </Link>
                     ))} */}
+                    <Link key={"Faculty Name"} href={"Faculty ID"}>
+                        <List title={"Faculty Name"} dueDate={""} />
+                    </Link>
+                    <div className='border-b-2 border-b1 pb-2'>
+                        <h2 className='text-primary-blue text-xl font-semibold'>Students</h2>
+                    </div>
+                    <Link key={"Name"} href={"Student ID"}>
+                        <List title={"Name"} dueDate={""}/>
+                    </Link>
+                    
                 </div>
             </main>
         </>
