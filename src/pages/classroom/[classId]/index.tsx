@@ -50,7 +50,7 @@ const Class1: React.FC<class1Props> = () => {
                 const classroomDocs = await getDoc(classroomref);
                 if (!classroomDocs.exists()) return;
                 setClassroomDetails(classroomDocs.data() as classroomDetails);
-                classroomDocs.data().creatorID === user!.uid ? setUserType('teacher') : setUserType('student');
+                classroomDocs.data().creatorId === user!.uid ? setUserType('teacher') : setUserType('student');
 
                 // getting Announcements data
                 // if (!classroomDocs.data().announcements || classroomDocs.data().announcements.length === 0) {
