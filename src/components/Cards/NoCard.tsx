@@ -9,7 +9,7 @@ type NoCardProps = {
 const NoCard:React.FC<NoCardProps> = ({cardHeading, cardDescription, cardButton}) => {
     
     return (
-        <div className='flex flex-col gap-3 items-center justify-center border-2 border-dashed border-spacing-6 border-gray-400 rounded-lg h-36 w-96 text-dark-layer-1'>
+        <div className='flex flex-col gap-3 items-center justify-center border-2 border-dashed border-spacing-6 border-gray-400 rounded-lg h-36 w-96 text-gray-500'>
             <h2 className='font-semibold text-2xl'>
                 {cardHeading}
             </h2>

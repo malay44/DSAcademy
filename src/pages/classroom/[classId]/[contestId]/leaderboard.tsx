@@ -10,6 +10,7 @@ type leaderboardProps = {
 };
 
 const leaderboard:React.FC<leaderboardProps> = () => {
+    
     const { classId } = useRouter().query;
     const tableData = [
         { id: 1, name: 'Malay', solved: 7, points: 70 },

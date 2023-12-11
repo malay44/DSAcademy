@@ -1,3 +1,4 @@
+import NoCard from '@/components/Cards/NoCard';
 import List from '@/components/List/List';
 import ClassNavAbove from '@/components/Navbar/ClassNavAbove';
 import ClassNavBelow from '@/components/Navbar/ClassNavBelow';
@@ -22,6 +23,12 @@ type class1Props = {
 };
 
 const Class1: React.FC<class1Props> = () => {
+    const [announcements, setAnnouncements] = useState<{ text: string; dateTime: string }[]>([]);
+
+    const handleAddAnnouncement = (text: string) => {
+      const newAnnouncements = [...announcements, { text, dateTime: new Date().toLocaleString() }];
+      setAnnouncements(newAnnouncements);
+    };
     const router = useRouter();
     const { classId } = router.query;
 
@@ -84,8 +91,17 @@ const Class1: React.FC<class1Props> = () => {
             <Banner/>
             <div className='flex gap-7 w-full'>
                 <div className='relative flex flex-col gap-5 w-4/5 '>
-                    <CreateAnnouncement/>
-                    <Announcement/>
+                    <CreateAnnouncement onAddAnnouncement={handleAddAnnouncement}/>
+                    {announcements.map((announcement, index) => (
+                      <Announcement key={index} text={announcement.text} dateTime={announcement.dateTime} />
+                    ))}
+                    {announcements.length === 0 && (<div className='flex items-center justify-center  p-5'>
+                            <div className='border-2 border-dashed p-4 rounded-lg'>
+                                <h3 className='text-dark-gray-6 font-medium text-lg'>
+                                    No Announcement
+                                </h3>
+                            </div>
+                        </div>)}
                 </div>
                 <div className='flex flex-col gap-3 w-1/5 '>
                     <Upcoming/>
