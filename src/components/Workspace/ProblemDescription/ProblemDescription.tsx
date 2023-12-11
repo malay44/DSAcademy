@@ -2,6 +2,7 @@ import CircleSkeleton from "@/components/Skeletons/CircleSkeleton";
 import RectangleSkeleton from "@/components/Skeletons/RectangleSkeleton";
 import { auth, firestore } from "@/firebase/firebase";
 import { DBProblem, Problem } from "@/utils/types/problem";
+import { questionDetails } from "@/utils/types/question";
 import { arrayRemove, arrayUnion, doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -11,19 +12,19 @@ import { TiStarOutline } from "react-icons/ti";
 import { toast } from "react-toastify";
 
 type ProblemDescriptionProps = {
-	problem: Problem;
+	problem: questionDetails;
 	_solved: boolean;
 };
 
 const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solved }) => {
 	const [user] = useAuthState(auth);
-	const { currentProblem, loading, problemDifficultyClass, setCurrentProblem } = useGetCurrentProblem(problem.id);
-	const { liked, disliked, solved, setData, starred } = useGetUsersDataOnProblem(problem.id);
+	const { currentProblem, loading, problemDifficultyClass, setCurrentProblem } = useGetCurrentProblem(problem.questionId);
+	const { liked, disliked, solved, setData, starred } = useGetUsersDataOnProblem(problem.questionId);
 	const [updating, setUpdating] = useState(false);
 
 	const returnUserDataAndProblemData = async (transaction: any) => {
 		const userRef = doc(firestore, "users", user!.uid);
-		const problemRef = doc(firestore, "problems", problem.id);
+		const problemRef = doc(firestore, "problems", problem.questionId);
 		const userDoc = await transaction.get(userRef);
 		const problemDoc = await transaction.get(problemRef);
 		return { userDoc, problemDoc, userRef, problemRef };
@@ -43,7 +44,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 				if (liked) {
 					// remove problem id from likedProblems on user document, decrement likes on problem document
 					transaction.update(userRef, {
-						likedProblems: userDoc.data().likedProblems.filter((id: string) => id !== problem.id),
+						likedProblems: userDoc.data().likedProblems.filter((id: string) => id !== problem.questionId),
 					});
 					transaction.update(problemRef, {
 						likes: problemDoc.data().likes - 1,
@@ -53,8 +54,8 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 					setData((prev) => ({ ...prev, liked: false }));
 				} else if (disliked) {
 					transaction.update(userRef, {
-						likedProblems: [...userDoc.data().likedProblems, problem.id],
-						dislikedProblems: userDoc.data().dislikedProblems.filter((id: string) => id !== problem.id),
+						likedProblems: [...userDoc.data().likedProblems, problem.questionId],
+						dislikedProblems: userDoc.data().dislikedProblems.filter((id: string) => id !== problem.questionId),
 					});
 					transaction.update(problemRef, {
 						likes: problemDoc.data().likes + 1,
@@ -67,7 +68,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 					setData((prev) => ({ ...prev, liked: true, disliked: false }));
 				} else {
 					transaction.update(userRef, {
-						likedProblems: [...userDoc.data().likedProblems, problem.id],
+						likedProblems: [...userDoc.data().likedProblems, problem.questionId],
 					});
 					transaction.update(problemRef, {
 						likes: problemDoc.data().likes + 1,
@@ -93,7 +94,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 				// already disliked, already liked, not disliked or liked
 				if (disliked) {
 					transaction.update(userRef, {
-						dislikedProblems: userDoc.data().dislikedProblems.filter((id: string) => id !== problem.id),
+						dislikedProblems: userDoc.data().dislikedProblems.filter((id: string) => id !== problem.questionId),
 					});
 					transaction.update(problemRef, {
 						dislikes: problemDoc.data().dislikes - 1,
@@ -102,8 +103,8 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 					setData((prev) => ({ ...prev, disliked: false }));
 				} else if (liked) {
 					transaction.update(userRef, {
-						dislikedProblems: [...userDoc.data().dislikedProblems, problem.id],
-						likedProblems: userDoc.data().likedProblems.filter((id: string) => id !== problem.id),
+						dislikedProblems: [...userDoc.data().dislikedProblems, problem.questionId],
+						likedProblems: userDoc.data().likedProblems.filter((id: string) => id !== problem.questionId),
 					});
 					transaction.update(problemRef, {
 						dislikes: problemDoc.data().dislikes + 1,
@@ -115,7 +116,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 					setData((prev) => ({ ...prev, disliked: true, liked: false }));
 				} else {
 					transaction.update(userRef, {
-						dislikedProblems: [...userDoc.data().dislikedProblems, problem.id],
+						dislikedProblems: [...userDoc.data().dislikedProblems, problem.questionId],
 					});
 					transaction.update(problemRef, {
 						dislikes: problemDoc.data().dislikes + 1,
@@ -139,13 +140,13 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 		if (!starred) {
 			const userRef = doc(firestore, "users", user.uid);
 			await updateDoc(userRef, {
-				starredProblems: arrayUnion(problem.id),
+				starredProblems: arrayUnion(problem.questionId),
 			});
 			setData((prev) => ({ ...prev, starred: true }));
 		} else {
 			const userRef = doc(firestore, "users", user.uid);
 			await updateDoc(userRef, {
-				starredProblems: arrayRemove(problem.id),
+				starredProblems: arrayRemove(problem.questionId),
 			});
 			setData((prev) => ({ ...prev, starred: false }));
 		}
@@ -167,7 +168,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 					{/* Problem heading */}
 					<div className='w-full'>
 						<div className='flex space-x-4'>
-							<div className='flex-1 mr-2 text-lg text-dark-layer-1 dark:text-white font-medium'>{problem?.title}</div>
+							<div className='flex-1 mr-2 text-lg text-dark-layer-1 dark:text-white font-medium'>{problem?.Name}</div>
 						</div>
 						{!loading && currentProblem && (
 							<div className='flex items-center mt-3'>
@@ -224,12 +225,12 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 
 						{/* Problem Statement(paragraphs) */}
 						<div className='text-dark-layer-1 dark:text-white text-sm'>
-							<div dangerouslySetInnerHTML={{ __html: problem.problemStatement }} />
+							<div dangerouslySetInnerHTML={{ __html: problem.Description }} />
 						</div>
 
 						{/* Examples */}
 						<div className='mt-4'>
-							{problem.examples?.map((example, index) => (
+							{/* {problem.inputFormat?.map((example, index) => (
 								<div key={example.id}>
 									<p className='font-medium text-dark-layer-1 dark:text-white '>Example {index + 1}: </p>
 									{example.img && <img src={example.img} alt='' className='mt-3' />}
@@ -247,14 +248,14 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 										</pre>
 									</div>
 								</div>
-							))}
+							))} */}
 						</div>
 
 						{/* Constraints */}
 						<div className='my-8 pb-4'>
 							<div className='text-dark-layer-1 dark:text-white text-sm font-medium'>Constraints:</div>
 							<ul className='text-dark-layer-1 dark:text-white ml-5 list-disc'>
-								<div dangerouslySetInnerHTML={{ __html: problem.constraints }} />
+								<div dangerouslySetInnerHTML={{ __html: problem.outputFormat }} />
 							</ul>
 						</div>
 					</div>

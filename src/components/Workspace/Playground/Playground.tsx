@@ -151,7 +151,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 					</div>
 
 					<div className='flex'>
-						{problem.examples.map((example, index) => (
+						{/* {problem.examples.map((example, index) => (
 							<div
 								className='mr-2 items-start mt-2 '
 								key={example.id}
@@ -170,18 +170,18 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 									</div>
 								</div>
 							</div>
-						))}
+						))} */}
 					</div>
 
 					<div className='font-semibold my-4'>
 						<p className='text-sm font-medium mt-4 text-dark-layer-1 dark:text-white'>Input:</p>
 						<div className='w-full cursor-text rounded-lg border px-3 py-[10px] 
 						bg-dark-gray-8 dark:bg-dark-fill-3 border-transparent text-dark-layer-1 dark:text-white mt-2'>
-							{problem.examples[activeTestCaseId].inputText}
+							{/* {problem.examples[activeTestCaseId].inputText} */}
 						</div>
 						<p className='text-sm font-medium mt-4 text-dark-layer-1 dark:text-white'>Output:</p>
 						<div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-gray-8 dark:bg-dark-fill-3 border-transparent text-dark-layer-1 dark:text-white mt-2'>
-							{problem.examples[activeTestCaseId].outputText}
+							{/* {problem.examples[activeTestCaseId].outputText} */}
 						</div>
 					</div>
 				</div>
