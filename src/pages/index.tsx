@@ -6,6 +6,7 @@ import Problems from './problemsMain';
 import { useRecoilState } from 'recoil';
 import { selectedTabState } from '@/atoms/selectedTabAtom';
 import ProblemsTable from "@/components/ProblemsTable/ProblemsTable";
+import ProblemsMain from "./problemsMain";
 
 export default function Home() {
 
@@ -24,7 +25,7 @@ export default function Home() {
 				{/* {selectedTab === '/' && <ProblemsMain />}
         		{selectedTab === 'classroom' && <ClassroomMain />}
         		{selectedTab === 'community' && <CommunityMain />} */}
-				<Problems/>
+				<ProblemsMain isContest={false} />
 			</main>
 		</>
 	);
