@@ -11,7 +11,7 @@ const DropdownMenu: React.FC<DropdownProps> = () => {
      bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 
      transition ease-in-out duration-150" id="options-menu" aria-haspopup="true" aria-expanded="true"> 
      <svg className="-mr-1 ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M10 14l6-6H4z" /> </svg> 
+      <path fillRule="evenodd" d="M10 14l6-6H4z" /> </svg> 
       </button> 
       </div> 
       <div className="origin-top-right absolute right-0 mt-2 w-24 rounded-md shadow-lg"> 

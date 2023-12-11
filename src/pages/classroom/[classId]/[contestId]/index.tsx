@@ -2,9 +2,8 @@ import NoCard from '@/components/Cards/NoCard';
 import ContestNavAbove from '@/components/Navbar/ContestNavAbove';
 import ContestNavBelow from '@/components/Navbar/ContestNavBelow';
 import ProblemsTable from '@/components/ProblemsTable/ProblemsTable';
-import AttemptProblems from '@/components/ProblemsTable/attemptProblems';
 import Topbar from '@/components/Topbar/Topbar';
-import Problems from '@/pages/problemsMain';
+import ProblemsMain from '@/pages/problemsMain';
 import React from 'react';
 
 type indexProps = {
@@ -22,7 +21,7 @@ const index:React.FC<indexProps> = () => {
             
         </div> */}
         <div className='overflow-auto'>
-        <AttemptProblems isContest={true} />
+        <ProblemsMain isContest={true} />
         </div>
     </main>
     )

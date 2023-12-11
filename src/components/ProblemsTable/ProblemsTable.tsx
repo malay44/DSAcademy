@@ -11,9 +11,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 type ProblemsTableProps = {
 	setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
+    isContest?: boolean; 
 };
 
-const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => {
+const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems , isContest}) => {
+
 	const [youtubePlayer, setYoutubePlayer] = useState({
 		isOpen: false,
 		videoId: "",
@@ -44,11 +46,14 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 							: problem.difficulty === "Medium"
 							? "text-dark-yellow"
 							: "text-dark-pink";
+                    const problemLetter = String.fromCharCode(65 + idx);
 					return (
 						<tr className={`${idx % 2 !== 1 ? "bg-dark-gray-9 dark:bg-dark-layer-1" : ""}`} key={problem.id}>
 							<th className='px-2 py-4 font-medium whitespace-nowrap text-dark-green-s'>
-								{solvedProblems.includes(problem.id) && <BsCheckCircle fontSize={"18"} width='18' />}
-							</th>
+                            {!isContest
+                              ? solvedProblems.includes(problem.id) && <BsCheckCircle fontSize={"18"} width='18' />
+                              : problemLetter}
+                            </th>
 							<td className='px-6 py-4'>
 								{problem.link ? (
 									<Link
@@ -69,7 +74,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 							</td>
 							<td className={`px-6 py-4 ${difficulyColor}`}>{problem.difficulty}</td>
 							<td className={"px-6 py-4"}>{problem.category}</td>
-							<td className={"px-6 py-4"}>
+							{!isContest && (<td className={"px-6 py-4"}>
 								{problem.videoId ? (
 									<AiFillYoutube
 										fontSize={"28"}
@@ -81,7 +86,8 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 								) : (
 									<p className='text-gray-500'>Coming soon</p>
 								)}
-							</td>
+							</td>)}
+                            {isContest && (<td className={`px-6 py-4 ${difficulyColor}`}>{problem.difficulty}</td>)}
 						</tr>
 					);
 				})}
