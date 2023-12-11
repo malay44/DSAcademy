@@ -140,7 +140,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems, isCon
 									<p className='text-gray-500'>Coming soon</p>
 								)}
 							</td>)}
-							{isContest && (<td className={`px-6 py-4 ${difficulyColor}`}>{problem.difficultyLevel}</td>)}
+							{isContest && (<td className={`px-6 py-4`}>{problem.Points}</td>)}
 						</tr>
 					);
 				})}
