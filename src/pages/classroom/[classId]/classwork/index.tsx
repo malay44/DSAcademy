@@ -69,7 +69,7 @@ const Index: React.FC<IndexProps> = () => {
         <>
             <main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen'>
                 <Topbar />
-                <ClassNavAbove classroomName={classDetails.classroomName} />
+                <ClassNavAbove classroomName={classDetails.classroomName} classroomId={classDetails.classroomId} />
                 <ClassNavBelow />
                 <div className='flex-1 w-full max-w-[1200px] mx-auto py-5 flex flex-col gap-3 '>
                     <div className='border-b-2 border-b1 pb-2'>
@@ -93,7 +93,7 @@ const Index: React.FC<IndexProps> = () => {
                     </div>
                     {contests && contests.map((contest) => (
                         <Link key={contest.contestId} href={`/classroom/${classId}/${contest.contestId}`}>
-                            <List title={contest.description} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
+                            <List title={contest.classroomName} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
                         </Link>
                     ))}
                 </div>

@@ -2,9 +2,9 @@ import { Timestamp } from "firebase/firestore";
 
 
 export type questionDetails = {
-    questionId: string;
     creatorId: string;
     Name: string;
+    questionId: string;
     Description: string;
     inputFormat: string;
     outputFormat: string;

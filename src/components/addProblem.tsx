@@ -6,10 +6,12 @@ import { Timestamp, addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 export default function AddProblem() {
     const [problem, setProblem] = useState<questionDetails>({
-        questionId: 0,
-        creatorId: 0,
+        questionId: '0',
+        creatorId: '0',
         Name: '',
         Description: '',
+        inputFormat: '',
+        outputFormat: '',
         Points: 0,
         updatedAt: Timestamp.now(),
         editorialCode: '',

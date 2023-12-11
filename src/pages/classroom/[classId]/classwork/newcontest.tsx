@@ -1,24 +1,27 @@
+"use client";
 import Button from '@/components/Buttons/Button';
 import Input from '@/components/Contest/Input';
 import NewContestQuestionTable from '@/components/Contest/NewContestQuestionTable';
 import NewProblem from '@/components/Contest/NewProblem';
 import ClassNavAbove from '@/components/Navbar/ClassNavAbove';
 import Topbar from '@/components/Topbar/Topbar';
-import { firestore } from '@/firebase/firebase';
+import { auth, firestore } from '@/firebase/firebase';
 import classrooms from '@/utils/types/classroom/classroomDetails';
+import contestDetails from '@/utils/types/contest/contestDetails';
 import { questionDetails } from '@/utils/types/question';
-import { Timestamp, doc, getDoc } from 'firebase/firestore';
+import { time } from 'console';
+import { Timestamp, collection, doc, getDoc, runTransaction, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-toastify';
 
-type NewcontestProps = {
+type contDet = Omit<contestDetails, 'questions'> & { questions: string[] };
 
-};
-
-const Newcontest: React.FC<NewcontestProps> = () => {
+const Newcontest = () => {
 
     const [classroomDetails, setClassroomDetails] = useState<classrooms>({} as classrooms);
-
+    const [user] = useAuthState(auth);
     const router = useRouter();
 
     useEffect(() => {
@@ -72,35 +75,91 @@ const Newcontest: React.FC<NewcontestProps> = () => {
         // console.log(formData);
     };
 
-    const handleAddContest = (e: any) => {
-        e.preventDefault();
-        // const contestRef = doc(firestore, "classrooms", classroomDetails.classroomId, "classwork", "contests", contestName);
-        // contestRef.set({
-        //     contestId: contestName,
-        //     contestName: contestName,
-        //     questions: questionsData,
-        // }).then(() => {
-        //     console.log("Document successfully written!");
-        //     router.push(`/classroom/${classroomDetails.classroomId}/classwork/contests/${contestName}`);
-        // }).catch((error) => {
-        //     console.error("Error writing document: ", error);
-        // });
-    }
-
     const [questionsData, setQuestionsData] = useState<questionDetails[]>([]);
 
-    const handleAddNewQuestion = (e : any) => {
+    const handleAddNewQuestion = (e: any) => {
         e.preventDefault();
         setQuestionsData((prevQuestionsData) => [...prevQuestionsData, formData]);
         // console.log("form submitted: ", questionsData);
-    }
+    };
+
+    const handleAddContest = async (e: any) => {
+        e.preventDefault();
+    
+        try {
+            // Validate contest name
+            if (!contestName) {
+                toast.error('Enter contest name');
+                return;
+            }
+    
+            // Validate questions
+            if (questionsData.length === 0) {
+                toast.error('Add at least one question');
+                return;
+            }
+    
+            // Validate user
+            if (!user) {
+                return;
+            }
+    
+            const contestRef = doc(collection(firestore, 'contest'));
+            const contestId = contestRef.id;
+            const classroomRef = doc(firestore, 'classrooms', classroomDetails.classroomId);
+            const questionsId: string[] = [];
+    
+            // Use a batch to add questions atomically
+            const batch = writeBatch(firestore);
+            questionsData.forEach((question) => {
+                const questionRef = doc(collection(firestore, 'questions'));
+                questionsId.push(questionRef.id);
+                batch.set(questionRef, { ...question, questionId: questionRef.id, creatorId: user.uid });
+            });
+            await batch.commit();
+            console.log('Questions added successfully');
+    
+            const contestData: contDet = {
+                contestId: contestId,
+                creatorId: user.uid,
+                name: contestName,
+                questions: questionsId,
+                participants: [],
+                createdAt: Timestamp.now(),
+                startTime: Timestamp.now(),
+                endTime: Timestamp.now(),
+                classroomId: classroomDetails.classroomId,
+                classroomName: classroomDetails.classroomName,
+            };
+    
+            // Use a transaction to ensure atomicity
+            await runTransaction(firestore, async (transaction) => {
+                // Set contest data
+                await setDoc(contestRef, contestData, { merge: true });
+    
+                // Update classroom with the new contest
+                const classroomSnapshot = await transaction.get(classroomRef);
+                const updatedContests = [...(classroomSnapshot.data()?.contests ?? []), contestId];
+                transaction.update(classroomRef, { contests: updatedContests });
+            });
+    
+            // Reset form data
+            setContestName('');
+            setQuestionsData([]);
+            setFormData({} as questionDetails);
+    
+            console.log('Contest added successfully');
+        } catch (error) {
+            console.error('Error adding contest:', error);
+            toast.error('Error adding contest, try again later');
+        }
+    };
 
     return <>
         <main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen '>
             <Topbar />
             <ClassNavAbove classroomId={classroomDetails.classroomId} classroomName={classroomDetails.classroomName} />
-            <form 
-                onSubmit={handleAddContest}
+            <div
                 className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3  pr-3  overflow-auto'>
                 <Input
                     onChange={handleContestNameChange}
@@ -111,6 +170,7 @@ const Newcontest: React.FC<NewcontestProps> = () => {
                 />
                 <Button
                     type='submit'
+                    onClick={handleAddContest}
                 >
                     Add Contest
                 </Button>
@@ -120,7 +180,7 @@ const Newcontest: React.FC<NewcontestProps> = () => {
                 {questionsData && (<NewContestQuestionTable questions={questionsData} />)}
                 <NewProblem formData={formData} handleInputChange={handleFormInputChange} handleSubmit={handleAddNewQuestion} />
 
-            </form>
+            </div>
         </main>
     </>
 }

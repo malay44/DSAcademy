@@ -12,13 +12,15 @@ type contestParticipantDetails = {
 
 type contestDetails = {
     contestId: string;
-    creator: string;
-    description: string;
-    questions: string[];    // store question IDs
+    creatorId: string;
+    name: string;
+    questions: questionDetails[];    // store question IDs
     participants: contestParticipantDetails[];
-    createdAt: Date;
+    createdAt: Timestamp;
     startTime: Timestamp;
     endTime: Timestamp;
+    classroomName: string;
+    classroomId: string;
 };
 
 export default contestDetails;

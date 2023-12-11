@@ -60,12 +60,12 @@ const NewProblem: React.FC<NewProblemProps> = ({formData, handleInputChange, han
                 onChange={handleInputChange}
             />
             <Input
-                label="Output"
+                label="testcases_sol"
                 variant="secondary"
-                placeholder="Enter Output"
+                placeholder="Enter testcases solution"
                 required
-                name="outputFormat"
-                value={formData.outputFormat}
+                name="testcases_sol"
+                value={formData.testcases_sol}
                 onChange={handleInputChange}
             />
             <Input
