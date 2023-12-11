@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Button from '../Buttons/Button';
 
 type ContestNavProps = {
-    
+    classId: string | string[] | undefined,
 };
 
-const ContestNav:React.FC<ContestNavProps> = () => {
+const ContestNav:React.FC<ContestNavProps> = ({classId}) => {
     
     return <nav className='relative flex h-[56px] w-full shrink-0 items-center px-10 bg-white dark:bg-dark-layer-1 text-dark-gray-6 dark:text-dark-gray-7'>
     <div className={`flex w-full items-center justify-between max-w-[1200px] h-20 mx-auto border-b-2`}>
@@ -19,18 +19,20 @@ const ContestNav:React.FC<ContestNavProps> = () => {
             <div className="flex gap-4 items-center text-xm font-semibold">
                 <p>Time Remaining</p>
                 <div className='flex'>
-                    <div className='border-2 p-1'>
+                    <div className='p-1'>
                         02Hrs
                     </div>
-                    <div className='border-2 p-1'>
+                    <div className='p-1'>
                         59Min
                     </div>
-                    <div className='border-2 p-1'>
+                    <div className='p-1'>
                         59Sec
                     </div>
                 </div>
             </div>
-            <Button>Exit Contest</Button>
+            <Link href={`/classroom/${classId}/classwork`} passHref>
+            <Button >Exit Contest</Button>
+          </Link>
         </div>
     </div>
 </nav>

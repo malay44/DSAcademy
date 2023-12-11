@@ -4,26 +4,25 @@ import ContestNavBelow from '@/components/Navbar/ContestNavBelow';
 import ProblemsTable from '@/components/ProblemsTable/ProblemsTable';
 import Topbar from '@/components/Topbar/Topbar';
 import ProblemsMain from '@/pages/problemsMain';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 type indexProps = {
     
 };
 
-const index:React.FC<indexProps> = () => {
-    
-    return (<main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen '>
-        <Topbar />
-        <ContestNavAbove/>
-        <ContestNavBelow/>
-        {/* <div className='flex-1 h-full mt-3 flex items-center justify-center  bg-lime-200'>
-            <NoCard cardHeading='Contest has not started' cardDescription='' cardButton={true} />
-            
-        </div> */}
-        <div className='overflow-auto'>
-        <ProblemsMain isContest={true} />
-        </div>
-    </main>
-    )
-}
-export default index;
+const Index: React.FC<indexProps> = () => {
+    const { classId } = useRouter().query;
+    return (
+        <main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen '>
+            <Topbar />
+            <ContestNavAbove classId={classId} />
+            <ContestNavBelow />
+            <div className='overflow-auto'>
+                <ProblemsMain isContest={true} />
+            </div>
+        </main>
+    );
+};
+
+export default Index;
