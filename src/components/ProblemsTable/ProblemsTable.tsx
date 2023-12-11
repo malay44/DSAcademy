@@ -8,6 +8,7 @@ import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/fires
 import { auth, firestore } from "@/firebase/firebase";
 import { DBProblem } from "@/utils/types/problem";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
 
 type ProblemsTableProps = {
 	setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,7 +16,15 @@ type ProblemsTableProps = {
 };
 
 const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems , isContest}) => {
+	const router = useRouter();
+	let classId: string | string[] | undefined;
+  	let contestId: string | string[] | undefined;
 
+  	if (isContest) {
+  	  const { classId: cId, contestId: contId } = router.query;
+  	  classId = cId;
+  	  contestId = contId;
+  	}
 	const [youtubePlayer, setYoutubePlayer] = useState({
 		isOpen: false,
 		videoId: "",
@@ -46,20 +55,19 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems , isCo
 							: problem.difficulty === "Medium"
 							? "text-dark-yellow"
 							: "text-dark-pink";
-                    const problemLetter = String.fromCharCode(65 + idx);
+                    const pid = String.fromCharCode(65 + idx);
 					return (
 						<tr className={`${idx % 2 !== 1 ? "bg-dark-gray-9 dark:bg-dark-layer-1" : ""}`} key={problem.id}>
 							<th className='px-2 py-4 font-medium whitespace-nowrap text-dark-green-s'>
                             {!isContest
                               ? solvedProblems.includes(problem.id) && <BsCheckCircle fontSize={"18"} width='18' />
-                              : problemLetter}
+                              : pid}
                             </th>
 							<td className='px-6 py-4'>
-								{problem.link ? (
+							{isContest ? (
 									<Link
-										href={problem.link}
+										href={`/classroom/${classId}/${contestId}/${pid}`}
 										className='hover:text-blue-600 cursor-pointer'
-										target='_blank'
 									>
 										{problem.title}
 									</Link>
