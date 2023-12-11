@@ -7,7 +7,7 @@ import { questionDetails } from '@/utils/types/question';
 type NewProblemProps = {
     formData: questionDetails;
     handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    handleSubmit: () => void;
+    handleSubmit: (e:any) => void;
 };
 
 const NewProblem: React.FC<NewProblemProps> = ({formData, handleInputChange, handleSubmit} : NewProblemProps) => {
