@@ -9,7 +9,6 @@ import { auth, firestore } from '@/firebase/firebase';
 import classrooms from '@/utils/types/classroom/classroomDetails';
 import contestDetails from '@/utils/types/contest/contestDetails';
 import { questionDetails } from '@/utils/types/question';
-import { time } from 'console';
 import { Timestamp, collection, doc, getDoc, runTransaction, serverTimestamp, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -63,6 +62,7 @@ const Newcontest = () => {
         testcases: '',
         testcases_sol: '',
         difficultyLevel: '',
+        tag: '',
     });
 
     const handleFormInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
