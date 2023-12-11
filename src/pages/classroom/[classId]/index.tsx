@@ -75,7 +75,7 @@ const Class1: React.FC<class1Props> = () => {
     return <>
         <main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen'>
             <Topbar />
-            <ClassNavAbove classroomName={classroomDetails.classroomName} />
+            <ClassNavAbove classroomName={classroomDetails.classroomName} classroomId={classroomDetails.classroomId} />
             <ClassNavBelow />
 
             {/* Stream  */}
