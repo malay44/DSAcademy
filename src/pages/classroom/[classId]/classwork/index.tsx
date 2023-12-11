@@ -95,7 +95,7 @@ const Index: React.FC<IndexProps> = () => {
                         <Link key={contest.contestId} href={`/classroom/${classId}/${contest.contestId}`}>
                             <List title={contest.classroomName} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
                         </Link>
-                    ))}
+                    ))} 
                 </div>
             </main>
         </>

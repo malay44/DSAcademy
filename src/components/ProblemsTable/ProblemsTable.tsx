@@ -104,10 +104,10 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems, isCon
 								: "text-dark-pink";
 					const pid = String.fromCharCode(65 + idx);
 					return (
-						<tr className={`${idx % 2 !== 1 ? "bg-dark-gray-9 dark:bg-dark-layer-1" : ""}`} key={problem.questionId}>
-							<th className='px-2 py-4 font-medium whitespace-nowrap text-dark-green-s'>
-								{pid}
-							</th>
+						<tr className={`${idx % 2 !== 1 ? "bg-dark-gray-9 dark:bg-dark-layer-1" : ""}`} key={problem.id}>
+							<th className={`px-2 py-4 font-medium whitespace-nowrap ${!isContest ? 'text-dark-green-s' : ''}`}>
+                            {pid}
+                            </th>
 							<td className='px-6 py-4'>
 								{isContest ? (
 									<Link
