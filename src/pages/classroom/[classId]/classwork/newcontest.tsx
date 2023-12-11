@@ -72,6 +72,21 @@ const Newcontest: React.FC<NewcontestProps> = () => {
         // console.log(formData);
     };
 
+    const handleAddContest = (e: any) => {
+        e.preventDefault();
+        // const contestRef = doc(firestore, "classrooms", classroomDetails.classroomId, "classwork", "contests", contestName);
+        // contestRef.set({
+        //     contestId: contestName,
+        //     contestName: contestName,
+        //     questions: questionsData,
+        // }).then(() => {
+        //     console.log("Document successfully written!");
+        //     router.push(`/classroom/${classroomDetails.classroomId}/classwork/contests/${contestName}`);
+        // }).catch((error) => {
+        //     console.error("Error writing document: ", error);
+        // });
+    }
+
     const [questionsData, setQuestionsData] = useState<questionDetails[]>([]);
 
     const handleAddNewQuestion = (e : any) => {
@@ -84,7 +99,9 @@ const Newcontest: React.FC<NewcontestProps> = () => {
         <main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen '>
             <Topbar />
             <ClassNavAbove classroomId={classroomDetails.classroomId} classroomName={classroomDetails.classroomName} />
-            <div className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3  pr-3  overflow-auto'>
+            <form 
+                onSubmit={handleAddContest}
+                className='flex-1 w-full max-w-[1200px] mx-auto  py-5 flex flex-col gap-3  pr-3  overflow-auto'>
                 <Input
                     onChange={handleContestNameChange}
                     label="Contest Name"
@@ -92,14 +109,18 @@ const Newcontest: React.FC<NewcontestProps> = () => {
                     placeholder="Enter contest name"
                     required
                 />
+                <Button
+                    type='submit'
+                >
+                    Add Contest
+                </Button>
                 <div className='flex justify-between items-center border-b-2 b border-primary-blue pb-2'>
                     <h3 className='text-primary-blue font-medium text-xl'>Questions</h3>
-                    <Button>Add New</Button>
                 </div>
                 {questionsData && (<NewContestQuestionTable questions={questionsData} />)}
                 <NewProblem formData={formData} handleInputChange={handleFormInputChange} handleSubmit={handleAddNewQuestion} />
 
-            </div>
+            </form>
         </main>
     </>
 }
