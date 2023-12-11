@@ -42,6 +42,7 @@ const Newcontest: React.FC<NewcontestProps> = () => {
     const [contestName, setContestName] = useState<string>('');
 
     const handleContestNameChange = (event: any) => {
+        event.preventDefault();
         setContestName(event.target.value);
         console.log("contest name: " + contestName);
     }
@@ -62,6 +63,7 @@ const Newcontest: React.FC<NewcontestProps> = () => {
     });
 
     const handleFormInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        event.preventDefault();
         const { name, value } = event.target;
         setFormData((prevFormData) => ({
             ...prevFormData,
@@ -72,7 +74,8 @@ const Newcontest: React.FC<NewcontestProps> = () => {
 
     const [questionsData, setQuestionsData] = useState<questionDetails[]>([]);
 
-    const handleAddNewQuestion = () => {
+    const handleAddNewQuestion = (e) => {
+        e.preventDefault();
         setQuestionsData((prevQuestionsData) => [...prevQuestionsData, formData]);
         console.log("form submitted: ", questionsData);
     }
