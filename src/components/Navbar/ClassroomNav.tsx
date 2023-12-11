@@ -4,7 +4,7 @@ import JoinClassButton from "../Buttons/JoinClassButton";
 import Button from "../Buttons/Button";
 import CreateClass from "@/components/Modals/CreateClass";
 import { toast } from "react-toastify";
-import { DocumentData, DocumentReference, Timestamp, collection, doc, setDoc } from "firebase/firestore";
+import { DocumentData, DocumentReference, Timestamp, arrayUnion, collection, doc, setDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 import classrooms from "@/utils/types/classroom/classroomDetails";
 
@@ -58,7 +58,7 @@ const ClassroomNav: React.FC<ClassroomNavProps> = ({userData, userRef}) => {
       section: 0,
       description: discription,
       createdAt: Timestamp.now(),
-      participants: [{userId: newClassroomRef.id, role: 'teacher'}],
+      participants: [{userId: userData.uid, role: 'teacher'}],
       contests: [],
       code: newClassroomRef.id,
       announcements: [],
@@ -68,7 +68,7 @@ const ClassroomNav: React.FC<ClassroomNavProps> = ({userData, userRef}) => {
     setClassCode(newClassroomRef.id);
 
     // add classroom id to user
-    userRef ? setDoc(userRef, {classrooms: [...userData.classrooms, newClassroomRef.id]}, {merge: true}) : console.log('userRef is undefined');
+    userRef ? setDoc(userRef, {classrooms: arrayUnion(newClassroomRef.id)}, {merge: true}) : console.log('userRef is undefined');
     // setCreateClassModalOpen(false);
   };
 
