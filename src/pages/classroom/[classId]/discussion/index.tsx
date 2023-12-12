@@ -23,7 +23,6 @@ const Index: React.FC<IndexProps> = () => {
     const { classId } = router.query;
 
     const [classDetails, setClassDetails] = useState<classroomDetails>({} as classroomDetails);
-    const [contests, setContests] = useState<contestDetails[]>([] as contestDetails[]);
     const [user] = useAuthState(auth);
 
     const [isAddPostModalOpen, setAddPostModalOpen] = useState(false);
@@ -50,20 +49,6 @@ const Index: React.FC<IndexProps> = () => {
                 const classroomDocs = await getDoc(classroomRef);
                 if (!classroomDocs.exists()) return;
                 setClassDetails(classroomDocs.data() as classroomDetails);
-
-                // getting contests data
-
-                if (!classroomDocs.data().contests || classroomDocs.data().contests.length === 0) {
-                    console.log('no contests');
-                    return;
-                };
-                const contestsQuery = query(
-                    collection(firestore, 'contest'),
-                    where('contestId', 'in', classroomDocs.data().contests)
-                );
-                const contestDocs = await getDocs(contestsQuery);
-                setContests(contestDocs.docs.map(doc => doc.data()) as contestDetails[]);
-                console.log(contestDocs.docs.map(doc => doc.data()));
 
             } else {
                 console.log('userDoc does not exist');
