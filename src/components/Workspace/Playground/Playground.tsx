@@ -67,31 +67,8 @@ const Playground: React.FC<PlaygroundProps> = ({
       return;
     }
     try {
-      // userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
-      // const cb = new Function(`return ${userCode}`)();
-      // const handler = problems[pid as string].handlerFunction;
       console.log(userCode);
 
-      // if (typeof handler === "function") {
-      // 	const success = handler(cb);
-      // 	if (success) {
-      // 		toast.success("Congrats! All tests passed!", {
-      // 			position: "top-center",
-      // 			autoClose: 3000,
-      // 			theme: "dark",
-      // 		});
-      // 		setSuccess(true);
-      // 		setTimeout(() => {
-      // 			setSuccess(false);
-      // 		}, 4000);
-
-      // 		const userRef = doc(firestore, "users", user.uid);
-      // 		await updateDoc(userRef, {
-      // 			solvedProblems: arrayUnion(pid),
-      // 		});
-      // 		setSolved(true);
-      // 	}
-      // }
       console.log("before submit");
       const response = await axios.post(
         "https://judge0-ce.p.rapidapi.com/submissions",
@@ -102,8 +79,8 @@ const Playground: React.FC<PlaygroundProps> = ({
         },
         {
           headers: {
-            "x-rapidapi-host": process.env.NEXT_PUBLIC_X_RAPIDAPI_KEY,
-            "x-rapidapi-key": process.env.NEXT_PUBLIC_X_RAPIDAPI_HOST,
+            "x-rapidapi-host": process.env.NEXT_PUBLIC_X_RAPIDAPI_HOST as string,
+            "x-rapidapi-key": process.env.NEXT_PUBLIC_X_RAPIDAPI_KEY as string,
           },
         }
       );
@@ -115,8 +92,8 @@ const Playground: React.FC<PlaygroundProps> = ({
           `https://judge0-ce.p.rapidapi.com/submissions/${token}`,
           {
             headers: {
-              "x-rapidapi-host": process.env.X_RapidAPI_Host,
-              "x-rapidapi-key": process.env.X_RapidAPI_Key,
+              "x-rapidapi-host": process.env.NEXT_PUBLIC_X_RAPIDAPI_HOST as string,
+              "x-rapidapi-key": process.env.NEXT_PUBLIC_X_RAPIDAPI_KEY as string,
             },
             params: {
               base64_encoded: "true",
