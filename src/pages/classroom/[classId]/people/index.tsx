@@ -4,6 +4,7 @@ import ClassNavBelow from '@/components/Navbar/ClassNavBelow';
 import Topbar from '@/components/Topbar/Topbar';
 import { auth, firestore } from '@/firebase/firebase';
 import classroomDetails from '@/utils/types/classroom/classroomDetails';
+import classroomParticipant from '@/utils/types/classroom/classroomParticipantDetails';
 import contestDetails from '@/utils/types/contest/contestDetails';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import Link from 'next/link';
@@ -19,7 +20,8 @@ const People: React.FC<PeopleProps> = () => {
     const { classId } = router.query;
 
     const [classDetails, setClassDetails] = useState<classroomDetails>({} as classroomDetails);
-    const [contests, setContests] = useState<contestDetails[]>([] as contestDetails[]);
+    const [student, setStudent] = useState<string[]>([] as string[]);
+    const [faculty, setFaculty] = useState<string[]>([] as string[]);
     const [user] = useAuthState(auth);
 
     useEffect(() => {
@@ -28,29 +30,46 @@ const People: React.FC<PeopleProps> = () => {
             const userDoc = await getDoc(userRef);
 
             if (userDoc.exists()) {
-                const classroomsId = await userDoc.data().classrooms;
-                if (!classroomsId || classroomsId.length === 0) return;
-                console.log(classroomsId)
 
                 const classroomRef = doc(firestore, 'classrooms', classId as string);
                 const classroomDocs = await getDoc(classroomRef);
                 if (!classroomDocs.exists()) return;
                 setClassDetails(classroomDocs.data() as classroomDetails);
 
-                // getting contests data
-
-                if (!classroomDocs.data().contests || classroomDocs.data().contests.length === 0) {
-                    console.log('no contests');
+                // getting participants data
+                if (!classroomDocs.data().participants || classroomDocs.data().participants.length === 0) {
+                    console.log('no participants');
                     return;
                 };
-                const contestsQuery = query(
-                    collection(firestore, 'contest'),
-                    where('contestId', 'in', classroomDocs.data().contests)
+                console.log(classroomDocs.data().participants);
+                const studentArray: string[] = [];
+                const facultyArray: string[] = [];
+                classroomDocs.data().participants.forEach((participant: classroomParticipant) => {
+                    if (participant.role === 'student') studentArray.push(participant.userId);
+                    else facultyArray.push(participant.userId);
+                });
+                // get names of all the students
+                const studentQuery = query(
+                    collection(firestore, 'users'),
+                    where('uid', 'in', studentArray)
                 );
-                const contestDocs = await getDocs(contestsQuery);
-                setContests(contestDocs.docs.map(doc => doc.data()) as contestDetails[]);
-                console.log(contestDocs.docs.map(doc => doc.data()));
-
+                const studentDocs = await getDocs(studentQuery);
+                const studentNames: string[] = [];
+                studentDocs.docs.forEach(doc => {
+                    studentNames.push(doc.data().displayName);
+                });
+                setStudent(studentNames);
+                // get names of all the faculty
+                const facultyQuery = query(
+                    collection(firestore, 'users'),
+                    where('uid', 'in', facultyArray)
+                );
+                const facultyDocs = await getDocs(facultyQuery);
+                const facultyNames: string[] = [];
+                facultyDocs.docs.forEach(doc => {
+                    facultyNames.push(doc.data().displayName);
+                });
+                setFaculty(facultyNames);
             } else {
                 console.log('userDoc does not exist');
                 toast.error("cannot find userDoc", { position: "top-left", theme: "dark" });
@@ -67,25 +86,24 @@ const People: React.FC<PeopleProps> = () => {
         <>
             <main className='flex flex-col bg-white dark:bg-dark-layer-2 h-screen'>
                 <Topbar />
-                <ClassNavAbove classroomName={classDetails.classroomName} />
+                <ClassNavAbove classroomName={classDetails.classroomName} classroomId={classDetails.classroomName} />
                 <ClassNavBelow />
                 <div className='flex-1 w-full max-w-[1200px] mx-auto py-5 flex flex-col gap-3 '>
                     <div className='border-b-2 border-b1 pb-2'>
                         <h2 className='text-primary-blue text-xl font-semibold'>Faculty</h2>
                     </div>
-                    {/* {contests && contests.map((contest) => (
-                        <Link key={contest.contestId} href={`${router.pathname}/${contest.contestId}`}>
-                            <List title={contest.description} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />
-                        </Link>
-                    ))} */}
                     <Link key={"Faculty Name"} href={"Faculty ID"}>
-                        <List title={"Faculty Name"} dueDate={""} />
+                        {faculty.map((name) => (
+                            <List key={name} title={name} dueDate={""} />
+                        ))}
                     </Link>
                     <div className='border-b-2 border-b1 pb-2'>
                         <h2 className='text-primary-blue text-xl font-semibold'>Students</h2>
                     </div>
                     <Link key={"Name"} href={"Student ID"}>
-                        <List title={"Name"} dueDate={""}/>
+                        {student.map((name) => (
+                            <List key={name} title={name} dueDate={""} />
+                        ))}
                     </Link>
                     
                 </div>

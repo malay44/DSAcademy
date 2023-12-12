@@ -13,6 +13,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
 import { FaPlus } from "react-icons/fa";
+import { useRecoilValue } from 'recoil';
+import { userTypeState } from '@/atoms/userTypeAtom';
 
 type IndexProps = {};
 
@@ -23,6 +25,7 @@ const Index: React.FC<IndexProps> = () => {
     const [classDetails, setClassDetails] = useState<classroomDetails>({} as classroomDetails);
     const [contests, setContests] = useState<contestDetails[]>([] as contestDetails[]);
     const [user] = useAuthState(auth);
+    const userType = useRecoilValue(userTypeState);
 
     useEffect(() => {
         const getClassroomData = async () => {
@@ -75,7 +78,7 @@ const Index: React.FC<IndexProps> = () => {
                     <div className='border-b-2 border-b1 pb-2'>
                         <h2 className='text-primary-blue text-xl font-semibold'>Contests</h2>
                     </div>
-                    <div className='flex gap-4'>
+                    {userType === 'teacher' && <div className='flex gap-4'>
                         <Link href={`/classroom/${classId}/classwork/newcontest`}>
                             <Button>
                                 <div className='flex gap-2 items-center justify-center'>
@@ -90,7 +93,7 @@ const Index: React.FC<IndexProps> = () => {
                             <p>Assignment</p>
                             </div>
                         </Button>
-                    </div>
+                    </div>}
                     {contests && contests.map((contest) => (
                         <Link key={contest.contestId} href={`/classroom/${classId}/${contest.contestId}`}>
                             <List title={contest.classroomName} dueDate={"due on " + contest.startTime.toDate().toUTCString()} />

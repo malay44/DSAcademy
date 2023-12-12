@@ -1,5 +1,5 @@
 import { Timestamp } from "firebase/firestore";
-import contestDetails from "../contest/contestDetails";
+import classroomParticipant from "./classroomParticipantDetails";
 // import classroomParticipant from "./classroomParticipantDetails";
 
 export type discussion = {
@@ -21,8 +21,8 @@ export type classrooms = {
     classroomName: string;  
     section: number;
     description: string;
-    createdAt: Date;
-    participants: string[];
+    createdAt: Timestamp;
+    participants: classroomParticipant[];
     contests: string[];
     code: string;
     announcements: announcement[];
