@@ -16,7 +16,7 @@ import { problems } from "@/utils/problems";
 import { Problem } from "@/utils/types/problem";
 import { themeState } from '@/atoms/themeStateAtom';
 import DarkModeToggleButton from "../Buttons/DarkModeToggleButton";
-import ProblemPage from "@/pages/dproblems/[pid]";
+import ProblemPage from "@/pages/problems/[pid]";
 
 
 type TopbarProps = {
