@@ -18,6 +18,7 @@ export default function AddProblem() {
         testcases: '',
         testcases_sol: '',
         difficultyLevel: '',
+        tag: '',
     });
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

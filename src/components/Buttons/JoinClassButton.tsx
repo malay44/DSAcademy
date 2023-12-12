@@ -8,6 +8,7 @@ import {
   updateDoc,
   where,
   arrayUnion,
+  getDoc,
 } from "firebase/firestore";
 import classroomParticipant from "@/utils/types/classroom/classroomParticipantDetails";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -45,7 +46,18 @@ const JoinClassButton: React.FC<JoinClassButtonProps> = () => {
 
       if (!querySnapshot.empty) {
         // finding the matched document
-
+        const userRef = doc(collection(firestore, "users"), user?.uid);
+        const userDoc = await getDoc(userRef);
+        console.log(userDoc.data());
+        console.log(user?.uid)
+        if(userDoc.data()?.creatorId === user?.uid){
+          toast.error("You are already a teacher", {
+            position: "top-center",
+            autoClose: 3000,
+            theme: "dark",
+          });
+          return;
+        }
         const participant: classroomParticipant = {
           userId: user?.uid,
           role: "student",
@@ -54,15 +66,27 @@ const JoinClassButton: React.FC<JoinClassButtonProps> = () => {
         querySnapshot.forEach(async (docSnapshot) => {
           const docId = docSnapshot.id;
           const docref = doc(collection(firestore, "classrooms"), docId);
-
+          const docData = await getDoc(docref);
+          // checking if the user is already a participant
+          if (
+            docData.data()?.participants.some(
+              (participant: any) => participant.userId === user?.uid
+            )
+          ) {
+            toast.error("You are already a participant", {
+              position: "top-center",
+              autoClose: 3000,
+              theme: "dark",
+            });
+            return;
+          }
           try {
             await updateDoc(docref, {
               // updating classroom document
               participants: arrayUnion(participant),
             });
-            const userDoc = doc(collection(firestore, "users"), user?.uid);
             try {
-              await updateDoc(userDoc, {
+              await updateDoc(userRef, {
                 // updating userDetails document
                 classrooms: arrayUnion(docId),
               });
