@@ -1,7 +1,7 @@
 import CircleSkeleton from "@/components/Skeletons/CircleSkeleton";
 import RectangleSkeleton from "@/components/Skeletons/RectangleSkeleton";
 import { auth, firestore } from "@/firebase/firebase";
-import Problem from "@/utils/types/question 2";
+import Problem, { questionDetails } from "@/utils/types/question";
 import {
   arrayRemove,
   arrayUnion,
@@ -23,20 +23,20 @@ import { TiStarOutline } from "react-icons/ti";
 import { toast } from "react-toastify";
 
 type ProblemDescriptionProps = {
-  problem: Problem;
+  problem: questionDetails;
 };
 
 const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
   const [user] = useAuthState(auth);
   const { currentProblem, loading, problemDifficultyClass, setCurrentProblem } =
-    useGetCurrentProblem(problem.id);
+    useGetCurrentProblem(problem.questionId);
   const { liked, disliked, solved, setData, starred } =
-    useGetUsersDataOnProblem(problem.id);
+    useGetUsersDataOnProblem(problem.questionId);
   const [updating, setUpdating] = useState(false);
 
   const returnUserDataAndProblemData = async (transaction: any) => {
     const userRef = doc(firestore, "users", user!.uid);
-    const problemRef = doc(firestore, "questions", problem.id);
+    const problemRef = doc(firestore, "questions", problem.questionId);
     const userDoc = await transaction.get(userRef);
     const problemDoc = await transaction.get(problemRef);
     return { userDoc, problemDoc, userRef, problemRef };
