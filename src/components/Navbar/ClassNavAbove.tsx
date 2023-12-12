@@ -4,7 +4,7 @@ import React from 'react';
 
 type ClassNavAboveProps = {
   classroomName: string;
-  classroomId: string;
+  classroomId: string | string[] | undefined;
 };
 
 const ClassNavAbove:React.FC<ClassNavAboveProps> = ({ classroomName, classroomId }: ClassNavAboveProps) => {
