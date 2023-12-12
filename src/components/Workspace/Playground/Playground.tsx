@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import PreferenceNav from "./PreferenceNav/PreferenceNav";
 import Split from "react-split";
 import CodeMirror from "@uiw/react-codemirror";
@@ -8,7 +8,7 @@ import { cpp } from "@codemirror/lang-cpp";
 import EditorFooter from "./EditorFooter";
 import Problem from "@/utils/types/question 2";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/firebase";
+import { auth, firestore } from "@/firebase/firebase";
 import { toast } from "react-toastify";
 import { problems } from "@/utils/problems";
 import { useRouter } from "next/router";
@@ -16,6 +16,8 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { useTheme } from "next-themes";
 import axios from "axios";
 import { stdin, stdout } from "process";
+import submission from "@/utils/types/submission";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 
 type PlaygroundProps = {
   problem: Problem;
@@ -58,13 +60,16 @@ const Playground: React.FC<PlaygroundProps> = ({
   } = useRouter();
 
   const handleSubmit = async () => {
+    setIsDisabled(true);
     if (!user) {
       toast.error("Please login to submit your code", {
         position: "top-center",
         autoClose: 3000,
         theme: "dark",
-      });
-      return;
+      });{
+        setIsDisabled(false);
+        return;
+      }
     }
     try {
       console.log(userCode);
@@ -117,16 +122,49 @@ const Playground: React.FC<PlaygroundProps> = ({
               autoClose: 3000,
               theme: "dark",
             });
+            setSuccess(true);
+            setTimeout(() => {
+              setSuccess(false);
+            }, 1000);
+            // add submission to db in submissions collection 
+            const submission: submission = {
+              uid: user.uid,
+              pid: pid as string,
+              verdict: "AC",
+              language: "C++",
+              time: new Date(),
+              code: userCode,
+            }
+            console.log(submission);
+            // add submission to firestore in submissions collection with auto generated id
+            const docRef = doc(collection(firestore, "submissions"));
+            submission.sid = docRef.id;
+            await setDoc(docRef, submission);
+            console.log("Document written with ID: ", docRef.id);
+
+            // add submission to user's submissions array
+            const userRef = doc(firestore, "users", user.uid);
+            const userDoc = await getDoc(userRef);
+            if (userDoc.exists()) {
+              var userSubmissions = userDoc.data().submissions;
+              if(!userSubmissions) userSubmissions = [];
+              userSubmissions.push(docRef.id);
+              await setDoc(userRef, { submissions: userSubmissions }, { merge: true });
+            }
+
           } else {
             toast.error("Wrong Answer", {
               position: "top-center",
               autoClose: 3000,
               theme: "dark",
             });
+            setSuccess(false);
           }
+          setIsDisabled(false);
           console.log(atob(response.data.stdout));
         } else {
           console.log("fail");
+          setIsDisabled(false);
           return;
           console.log(response.data.status);
         }
@@ -172,6 +210,8 @@ const Playground: React.FC<PlaygroundProps> = ({
 
   // const [currentTheme, setCurrentTheme] = useRecoilState<('light' | 'dark')>(themeState);
 
+
+	const [isDisabled, setIsDisabled] = useState(false);
   const { theme } = useTheme();
 
   return (
@@ -205,7 +245,7 @@ const Playground: React.FC<PlaygroundProps> = ({
           </div>
         </div>
       </Split>
-      <EditorFooter handleSubmit={handleSubmit} />
+      <EditorFooter handleSubmit={handleSubmit} isDisabled={isDisabled} />
     </div>
   );
 };

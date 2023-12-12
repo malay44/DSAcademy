@@ -1,6 +1,7 @@
 import { Timestamp } from "firebase/firestore";
 
 type submission = {
+    sid: string;
     submissionId: string;
     questionId: string;
     participantId: string;
