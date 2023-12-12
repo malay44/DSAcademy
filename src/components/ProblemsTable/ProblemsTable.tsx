@@ -111,7 +111,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems, isCon
 							<td className='px-6 py-4'>
 								{isContest ? (
 									<Link
-										href={`/classroom/${classId}/${contestId}/${pid}`}
+										href={`/classroom/${classId}/${contestId}/${problem.questionId}`}
 										className='hover:text-blue-600 cursor-pointer'
 									>
 										{problem.Name}
