@@ -131,7 +131,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
             </div>
 
             {/* Examples */}
-            {/* <div className='mt-4'>
+            <div className='mt-4'>
 							{problem.examples?.map((example, index) => (
 								<div key={example.id}>
 									<p className='font-medium text-dark-layer-1 dark:text-white '>Example {index + 1}: </p>
@@ -151,15 +151,15 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 									</div>
 								</div>
 							))}
-						</div> */}
+						</div>
 
             {/* Constraints */}
-            {/* <div className='my-8 pb-4'>
+            <div className='my-8 pb-4'>
 							<div className='text-dark-layer-1 dark:text-white text-sm font-medium'>Constraints:</div>
 							<ul className='text-dark-layer-1 dark:text-white ml-5 list-disc'>
-								<div dangerouslySetInnerHTML={{ __html: problem!.Name }} />
+								<div dangerouslySetInnerHTML={{ __html: problem!.constraints }} />
 							</ul>
-						</div> */}
+						</div>
           </div>
         </div>
       </div>
