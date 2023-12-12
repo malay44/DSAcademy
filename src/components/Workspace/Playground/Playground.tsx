@@ -6,7 +6,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { githubDarkInit, githubLight } from "@uiw/codemirror-theme-github";
 import { cpp } from "@codemirror/lang-cpp";
 import EditorFooter from "./EditorFooter";
-import { Problem } from "@/utils/types/problem";
+import Problem from "@/utils/types/question 2";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import { toast } from "react-toastify";
@@ -33,8 +33,6 @@ const customDarkTheme = githubDarkInit({
   settings: {
     background: "rgb(40,40,40)",
     gutterBackground: "rgb(40,40,40)",
-    // gutterBorder: "#cceeff44",
-    // gutterActiveForeground: '#3e61a8',
   },
 });
 
@@ -100,7 +98,7 @@ const Playground: React.FC<PlaygroundProps> = ({
         {
           source_code: userCode,
           language_id: 54,
-          stdin: problem.input,
+          stdin: problem.testcases,
         },
         {
           headers: {
@@ -134,9 +132,9 @@ const Playground: React.FC<PlaygroundProps> = ({
           setTimeout(checkStatus, 1000);
         } else if (response.data.status.id === 3) {
           const op: string = atob(response.data.stdout);
-          console.log(problem.input);
-          console.log(problem.answer);
-          if (op === problem.answer) {
+          console.log(problem.testcases);
+          console.log(problem.testcases_sol);
+          if (op === problem.testcases_sol) {
             toast.success("Right Answer", {
               position: "top-center",
               autoClose: 3000,
@@ -184,11 +182,11 @@ const Playground: React.FC<PlaygroundProps> = ({
   useEffect(() => {
     const code = localStorage.getItem(`code-${pid}`);
     if (user) {
-      setUserCode(code ? JSON.parse(code) : problem.starterCode);
+      setUserCode(code ? JSON.parse(code) : "");
     } else {
-      setUserCode(problem.starterCode);
+      setUserCode("");
     }
-  }, [pid, user, problem.starterCode]);
+  }, [pid, user]);
 
   const onChange = (value: string) => {
     setUserCode(value);
@@ -206,8 +204,8 @@ const Playground: React.FC<PlaygroundProps> = ({
       <Split
         className="h-[calc(100vh-94px)]"
         direction="vertical"
-        sizes={[60, 40]}
-        minSize={60}
+        sizes={[100, 0]}
+        minSize={100}
       >
         <div className="w-full overflow-auto">
           <CodeMirror
@@ -226,51 +224,6 @@ const Playground: React.FC<PlaygroundProps> = ({
                 Testcases
               </div>
               <hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-dark-layer-1 dark:bg-white" />
-            </div>
-          </div>
-
-          <div className="flex">
-            {problem.examples.map((example, index) => (
-              <div
-                className="mr-2 items-start mt-2 "
-                key={example.id}
-                onClick={() => setActiveTestCaseId(index)}
-              >
-                <div className="flex flex-wrap items-center gap-y-4">
-                  <div
-                    className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-gray-8
-										dark:bg-dark-fill-3 
-										hover:bg-dark-gray-9
-										dark:hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap
-										${
-                      activeTestCaseId === index
-                        ? "text-dark-layer-1 dark:text-white"
-                        : "text-gray-400 dark:text-gray-500"
-                    }
-									`}
-                  >
-                    Case {index + 1}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="font-semibold my-4">
-            <p className="text-sm font-medium mt-4 text-dark-layer-1 dark:text-white">
-              Input:
-            </p>
-            <div
-              className="w-full cursor-text rounded-lg border px-3 py-[10px] 
-						bg-dark-gray-8 dark:bg-dark-fill-3 border-transparent text-dark-layer-1 dark:text-white mt-2"
-            >
-              {problem.examples[activeTestCaseId].inputText}
-            </div>
-            <p className="text-sm font-medium mt-4 text-dark-layer-1 dark:text-white">
-              Output:
-            </p>
-            <div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-gray-8 dark:bg-dark-fill-3 border-transparent text-dark-layer-1 dark:text-white mt-2">
-              {problem.examples[activeTestCaseId].outputText}
             </div>
           </div>
         </div>
