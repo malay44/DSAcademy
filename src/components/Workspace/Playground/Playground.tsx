@@ -102,8 +102,8 @@ const Playground: React.FC<PlaygroundProps> = ({
         },
         {
           headers: {
-            "x-rapidapi-host": process.env.X_RapidAPI_Host,
-            "x-rapidapi-key": process.env.X_RapidAPI_Key,
+            "x-rapidapi-host": process.env.NEXT_PUBLIC_X_RAPIDAPI_KEY,
+            "x-rapidapi-key": process.env.NEXT_PUBLIC_X_RAPIDAPI_HOST,
           },
         }
       );
