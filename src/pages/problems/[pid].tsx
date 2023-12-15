@@ -1,57 +1,53 @@
+// dproblem/[pid].tsx
+"use client";
 import Topbar from "@/components/Topbar/Topbar";
 import Workspace from "@/components/Workspace/Workspace";
-import useHasMounted from "@/hooks/useHasMounted";
-import { problems } from "@/utils/problems";
-import { Problem } from "@/utils/types/problem";
-import React from "react";
+import { firestore } from "@/firebase/firebase";
+import Problem from "@/utils/types/question 2";
+import { doc, getDoc } from "firebase/firestore";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import NotFoundPage from "@/components/notFound";
 
-type ProblemPageProps = {
-	problem: Problem;
-};
+type ProblemPageProps = {};
 
-const ProblemPage: React.FC<ProblemPageProps> = ({ problem }) => {
-	const hasMounted = useHasMounted();
+const ProblemPage: React.FC<ProblemPageProps> = () => {
+  const [loading, setLoading] = useState(true);
+  const [problem, setProblem] = useState<Problem>({} as Problem);
+  const [notFound, setNotFound] = useState(false);
 
-	if (!hasMounted) return null;
+  const { pid } = useRouter().query;
 
-	return (
-		<div>
-			<Topbar problemPage />
-			<Workspace problem={problem} />
-		</div>
-	);
+  useEffect(() => {
+    const getProblems = async () => {
+      setLoading(true);
+      try {
+        const problemRef = doc(firestore, "questions", pid as string);
+        const result = await getDoc(problemRef);
+        if (!result.exists()) {
+          // display default 404 page
+          setNotFound(true);
+          return;
+        }
+        const data = result.data();
+        // console.log(data);
+        setProblem(data as Problem);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching Firestore document:", error);
+      }
+      // fetching data logic
+    };
+
+    getProblems();
+  }, [pid, setLoading]);
+
+  return (
+    <div>
+      <Topbar problemPage />
+      {!loading && <Workspace problem={problem} />}
+      {notFound && <NotFoundPage />}
+    </div>
+  );
 };
 export default ProblemPage;
-
-// fetch the local data
-//  SSG
-// getStaticPaths => it create the dynamic routes
-export async function getStaticPaths() {
-	const paths = Object.keys(problems).map((key) => ({
-		params: { pid: key },
-	}));
-
-	return {
-		paths,
-		fallback: false,
-	};
-}
-
-// getStaticProps => it fetch the data
-
-export async function getStaticProps({ params }: { params: { pid: string } }) {
-	const { pid } = params;
-	const problem = problems[pid];
-
-	if (!problem) {
-		return {
-			notFound: true,
-		};
-	}
-	problem.handlerFunction = problem.handlerFunction.toString();
-	return {
-		props: {
-			problem,
-		},
-	};
-}

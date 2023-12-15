@@ -1,26 +1,38 @@
+"use client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { BsCheckCircle } from "react-icons/bs";
 import { AiFillYoutube } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import YouTube from "react-youtube";
-import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
-import { auth, firestore } from "@/firebase/firebase";
-import { DBProblem } from "@/utils/types/problem";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { collection, doc, getDoc, getDocs, limit, query, where } from "firebase/firestore";
+import { firestore } from "@/firebase/firebase";
+import { useRouter } from "next/router";
+import { questionDetails } from "@/utils/types/question";
 
 type ProblemsTableProps = {
 	setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
+	isContest?: boolean;
 };
 
-const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => {
+const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems, isContest }) => {
+	const router = useRouter();
+	let classId: string | string[] | undefined;
+	let contestId: string | string[] | undefined;
+
+	if (isContest) {
+		const { classId: cId, contestId: contId } = router.query;
+		classId = cId;
+		contestId = contId;
+	}
 	const [youtubePlayer, setYoutubePlayer] = useState({
 		isOpen: false,
 		videoId: "",
 	});
-	const problems = useGetProblems(setLoadingProblems);
-	const solvedProblems = useGetSolvedProblems();
-	console.log("solvedProblems", solvedProblems);
+
+	const [problems, setProblems] = useState<questionDetails[]>([] as questionDetails[]);
+	// problems = !isContest ? useGetProblems(setLoadingProblems) : await getContestProblemsFromDB(setLoadingProblems);
+	// const solvedProblems = useGetSolvedProblems();
+	// console.log("solvedProblems", solvedProblems);
 	const closeModal = () => {
 		setYoutubePlayer({ isOpen: false, videoId: "" });
 	};
@@ -30,46 +42,92 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 			if (e.key === "Escape") closeModal();
 		};
 		window.addEventListener("keydown", handleEsc);
-
 		return () => window.removeEventListener("keydown", handleEsc);
 	}, []);
 
+	useEffect(() => {
+		// console.log("called useEffect");
+		async function getContestProblemsFromDB(setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>) {
+			setLoadingProblems(true);
+			const tmp: questionDetails[] = [];
+			const contestRef = doc(firestore, "contest", router.query.contestId as string);
+			const contestDoc = await getDoc(contestRef);
+			if (!contestDoc.exists()) return;
+			const contestData = contestDoc.data();
+			if (!contestData) return;
+			const problemsId = contestData.questions;
+			// console.log(contestData);
+			// console.log(problemsId);
+			if (!problemsId) return;
+			const q = query(collection(firestore, "questions"), where("questionId", "in", problemsId));
+			const querySnapshot = await getDocs(q);
+			querySnapshot.forEach((doc) => {
+				tmp.push(doc.data() as questionDetails);
+			});
+			setLoadingProblems(false);
+			console.log(tmp);
+			setProblems(tmp);
+			return tmp;
+		}
+
+		async function getProblemsFromDB(setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>) {
+			setLoadingProblems(true);
+			const q = query(collection(firestore, "questions"), limit(10));
+			const querySnapshot = await getDocs(q);
+			const tmp: questionDetails[] = [];
+			querySnapshot.forEach((doc) => {
+				tmp.push(doc.data() as questionDetails);
+			});
+			setLoadingProblems(false);
+			console.log(tmp);
+			setProblems(tmp);
+			return tmp;
+		}
+
+		if (isContest && router && router.query && router.query.contestId) {
+			getContestProblemsFromDB(setLoadingProblems);
+			// console.log(problems)
+		} else {
+			getProblemsFromDB(setLoadingProblems);
+		}
+	}, [isContest, setLoadingProblems, router, router.query.contestId]);
+
 	return (
 		<>
-			<tbody className='text-black'>
+			<tbody className='text-gray-2 dark:text-white'>
 				{problems.map((problem, idx) => {
 					const difficulyColor =
-						problem.difficulty === "Easy"
+						problem.difficultyLevel === "Easy"
 							? "text-dark-green-s"
-							: problem.difficulty === "Medium"
-							? "text-dark-yellow"
-							: "text-dark-pink";
+							: problem.difficultyLevel === "Medium"
+								? "text-dark-yellow"
+								: "text-dark-pink";
+					const pid = String.fromCharCode(65 + idx);
 					return (
-						<tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={problem.id}>
-							<th className='px-2 py-4 font-medium whitespace-nowrap text-dark-green-s'>
-								{solvedProblems.includes(problem.id) && <BsCheckCircle fontSize={"18"} width='18' />}
-							</th>
+						<tr className={`${idx % 2 !== 1 ? "bg-dark-gray-9 dark:bg-dark-layer-1" : ""}`} key={problem.id}>
+							<th className={`px-2 py-4 font-medium whitespace-nowrap ${!isContest ? 'text-dark-green-s' : ''}`}>
+                            {pid}
+                            </th>
 							<td className='px-6 py-4'>
-								{problem.link ? (
+								{isContest ? (
 									<Link
-										href={problem.link}
+										href={`/classroom/${classId}/${contestId}/${problem.questionId}`}
 										className='hover:text-blue-600 cursor-pointer'
-										target='_blank'
 									>
-										{problem.title}
+										{problem.Name}
 									</Link>
 								) : (
 									<Link
 										className='hover:text-blue-600 cursor-pointer'
-										href={`/problems/${problem.id}`}
+										href={`/problems/${problem.questionId}`}
 									>
-										{problem.title}
+										{problem.Name}
 									</Link>
 								)}
 							</td>
-							<td className={`px-6 py-4 ${difficulyColor}`}>{problem.difficulty}</td>
-							<td className={"px-6 py-4"}>{problem.category}</td>
-							<td className={"px-6 py-4"}>
+							<td className={`px-6 py-4 ${difficulyColor}`}>{problem.difficultyLevel}</td>
+							<td className={"px-6 py-4"}>{problem.tag}</td>
+							{!isContest && (<td className={"px-6 py-4"}>
 								{problem.videoId ? (
 									<AiFillYoutube
 										fontSize={"28"}
@@ -79,9 +137,10 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 										}
 									/>
 								) : (
-									<p className='text-black'>Coming soon</p>
+									<p className='text-gray-500'>Coming soon</p>
 								)}
-							</td>
+							</td>)}
+							{isContest && (<td className={`px-6 py-4`}>{problem.Points}</td>)}
 						</tr>
 					);
 				})}
@@ -114,46 +173,3 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 	);
 };
 export default ProblemsTable;
-
-function useGetProblems(setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>) {
-	const [problems, setProblems] = useState<DBProblem[]>([]);
-
-	useEffect(() => {
-		const getProblems = async () => {
-			// fetching data logic
-			setLoadingProblems(true);
-			const q = query(collection(firestore, "problems"), orderBy("order", "asc"));
-			const querySnapshot = await getDocs(q);
-			const tmp: DBProblem[] = [];
-			querySnapshot.forEach((doc) => {
-				tmp.push({ id: doc.id, ...doc.data() } as DBProblem);
-			});
-			setProblems(tmp);
-			setLoadingProblems(false);
-		};
-
-		getProblems();
-	}, [setLoadingProblems]);
-	return problems;
-}
-
-function useGetSolvedProblems() {
-	const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
-	const [user] = useAuthState(auth);
-
-	useEffect(() => {
-		const getSolvedProblems = async () => {
-			const userRef = doc(firestore, "users", user!.uid);
-			const userDoc = await getDoc(userRef);
-
-			if (userDoc.exists()) {
-				setSolvedProblems(userDoc.data().solvedProblems);
-			}
-		};
-
-		if (user) getSolvedProblems();
-		if (!user) setSolvedProblems([]);
-	}, [user]);
-
-	return solvedProblems;
-}

@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@200;300;400;500;600;700&display=swap');
+
+
 
 /* RESET */
 * {
@@ -10,8 +14,8 @@
 }
 
 body {
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-		"Open Sans", "Helvetica Neue", sans-serif;
+	font-family: "Overpass",system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+		"Open Sans", "Helvetica Neue", sans-serif, "Source Code Pro", ;
 	height: 100vh;
 }
 
@@ -32,17 +36,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-	background: #282828;
+	/* background: #282828; */
+	@apply dark:bg-[#282828] bg-[#ffffff];
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #4d4d4d;
+	/* background: #4d4d4d; */
+	@apply dark:bg-[#4d4d4d] bg-[#c4c4c4];
+	border-radius: 0.5rem;
 }
+
+
 
 /* CODE EDITOR*/
 .cm-scroller,
 .cm-gutters {
-	background-color: #282828 !important;
+	border: none !important;
 }
 .cm-focused {
 	outline: none !important;
@@ -54,7 +63,7 @@ body {
 }
 
 .gutter {
-	background-color: rgb(26, 26, 26);
+	@apply dark:bg-[#1a1a1a] bg-[#f3f4f8];
 	background-repeat: no-repeat;
 	background-position: 50%;
 }
@@ -82,23 +91,36 @@ code {
 	padding: 0.125rem;
 	letter-spacing: 1px;
 	white-space: pre-wrap;
-	background-color: hsla(0, 0%, 100%, 0.07);
-	border-color: rgba(247, 250, 255, 0.12);
-	/* color: rgba(239, 241, 246, 0.75); */
+	@apply dark:bg-[#ffffff1a] dark:text-[#eff1f6bf] bg-[#eff1f6bf] text-[#1d1d1d] border-[#f7faff1f];
 }
 
 .example-card pre {
-	background-color:#ECECEC;
 	border-radius: 0.5rem;
-	/* color: rgba(239, 241, 246, 0.75); */
 	font-size: 0.98rem;
 	line-height: 1.25rem;
 	margin-bottom: 1rem;
 	margin-top: 1rem;
 	padding: 1rem;
 	white-space: pre-wrap;
+	@apply dark:bg-[#ffffff1a] dark:text-[#eff1f6bf] bg-dark-gray-8 text-[#1d1d1d];
 }
 .example-card pre strong {
-	/* color: white; */
 	font-size: 1rem;
+	@apply dark:text-[#eff1f6] text-[#1d1d1d];
 }
+
+.form{
+	margin: auto;
+	width: 25%;
+	border: 2px solid;
+	display: flex;
+	flex-direction: column;
+}
+
+.createclass1{
+	display: flex;
+	justify-content: space-between;
+}
+
+
+
