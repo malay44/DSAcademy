@@ -1,5 +1,7 @@
 # DSAcademy 
 
+# Figma: [DSAcademy](https://www.figma.com/file/5tcFlPSXcR9JgsDIg6nSNM/DSAcademy_HCI?type=design&node-id=0%3A1&mode=design&t=lxrkaaD4nlOLinrt-1)
+
 # setup 
 
 - Rename .env.local.example to .env.local
